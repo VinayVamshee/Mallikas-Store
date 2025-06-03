@@ -54,7 +54,7 @@ export default function Navigation() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('https://mallikas-store-server.vercel.app//login', loginUser);
+            const res = await axios.post('https://mallikas-store-server.vercel.app/login', loginUser);
             if (res.data.token) {
                 localStorage.setItem('token', res.data.token);
                 alert('Login successful!');
@@ -70,7 +70,7 @@ export default function Navigation() {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('https://mallikas-store-server.vercel.app//register', {
+            const res = await axios.post('https://mallikas-store-server.vercel.app/register', {
                 ...registerUser,
                 isAdmin: false
             });
@@ -100,7 +100,7 @@ export default function Navigation() {
     const [baselineInputs, setBaselineInputs] = useState({});
 
     useEffect(() => {
-        axios.get('https://mallikas-store-server.vercel.app//Baseline')
+        axios.get('https://mallikas-store-server.vercel.app/Baseline')
             .then(res => {
                 if (res.data) setBaseline(res.data);
             })
@@ -114,7 +114,7 @@ export default function Navigation() {
         delete dataToSend._id;
         delete dataToSend.__v;
 
-        axios.post('https://mallikas-store-server.vercel.app//Baseline', dataToSend)
+        axios.post('https://mallikas-store-server.vercel.app/Baseline', dataToSend)
             .then(res => {
                 alert('Baseline updated successfully');
             })
@@ -151,7 +151,7 @@ export default function Navigation() {
         e.preventDefault();
         try {
             // eslint-disable-next-line
-            const response = await axios.post('https://mallikas-store-server.vercel.app//items', item);
+            const response = await axios.post('https://mallikas-store-server.vercel.app/items', item);
             alert('Item saved successfully!');
             setItem({ name: '', category: 'apparel', sub_category: '', color: '', size: '', description: '', mainImage: '', otherImages: [''], available: true });
             window.location.reload();

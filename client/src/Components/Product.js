@@ -99,7 +99,7 @@ export default function Product() {
                 quantity,
             };
 
-            const response = await axios.post('https://mallikas-store-server.vercel.app//addtocart', payload, {
+            const response = await axios.post('https://mallikas-store-server.vercel.app/addtocart', payload, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

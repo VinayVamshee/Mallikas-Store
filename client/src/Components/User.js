@@ -13,7 +13,7 @@ export default function User() {
         const fetchUser = async () => {
             try {
                 const decoded = JSON.parse(atob(token.split('.')[1]));
-                const res = await axios.get(`https://mallikas-store-server.vercel.app//users/${decoded.id}`, {
+                const res = await axios.get(`https://mallikas-store-server.vercel.app/users/${decoded.id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUser(res.data);
@@ -34,7 +34,7 @@ export default function User() {
 
     const handleSave = async () => {
         try {
-            await axios.put(`https://mallikas-store-server.vercel.app//users/${user._id}`, formData, {
+            await axios.put(`https://mallikas-store-server.vercel.app/users/${user._id}`, formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             alert('Customer Data Updated');
@@ -112,13 +112,13 @@ export default function User() {
                 totalPrice
             };
 
-            await axios.post('https://mallikas-store-server.vercel.app//orders', orderPayload, {
+            await axios.post('https://mallikas-store-server.vercel.app/orders', orderPayload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
             alert('Order placed successfully!');
             const decoded = JSON.parse(atob(token.split('.')[1]));
-            const res = await axios.get(`https://mallikas-store-server.vercel.app//users/${decoded.id}`, {
+            const res = await axios.get(`https://mallikas-store-server.vercel.app/users/${decoded.id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUser(res.data);
@@ -130,7 +130,7 @@ export default function User() {
     };
 
     const removeFromCart = (itemId) => {
-        axios.post('https://mallikas-store-server.vercel.app//removefromcart', { itemId }, {
+        axios.post('https://mallikas-store-server.vercel.app/removefromcart', { itemId }, {
             headers: { Authorization: `Bearer ${token}` }
         }).then(response => {
             // Update local state with returned cart
@@ -281,10 +281,10 @@ export default function User() {
                 const decoded = JSON.parse(atob(token.split('.')[1]));
 
                 const [userRes, ordersRes] = await Promise.all([
-                    axios.get(`https://mallikas-store-server.vercel.app//users/${decoded.id}`, {
+                    axios.get(`https://mallikas-store-server.vercel.app/users/${decoded.id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     }),
-                    axios.get(`https://mallikas-store-server.vercel.app//orders/${decoded.id}`, {
+                    axios.get(`https://mallikas-store-server.vercel.app/orders/${decoded.id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     })
                 ]);
@@ -312,11 +312,11 @@ export default function User() {
 const cancelOrder = async (orderId) => {
     if (window.confirm("Are you sure you want to cancel this order?")) {
         try {
-            await axios.put(`https://mallikas-store-server.vercel.app//orders/${orderId}/cancel`, {}, {
+            await axios.put(`https://mallikas-store-server.vercel.app/orders/${orderId}/cancel`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             alert("Order cancelled.");
-            const updated = await axios.get(`https://mallikas-store-server.vercel.app//orders/${user._id}`, {
+            const updated = await axios.get(`https://mallikas-store-server.vercel.app/orders/${user._id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setOrders(updated.data);

@@ -53,7 +53,7 @@ export default function Admin() {
 
     const fetchOrders = () => {
         setLoading(true);
-        axios.get('https://mallikas-store-server.vercel.app//orders')
+        axios.get('https://mallikas-store-server.vercel.app/orders')
             .then(res => {
                 setOrders(res.data);
                 setLoading(false);
@@ -107,7 +107,7 @@ export default function Admin() {
             return;
         }
         setUpdating(true);
-        axios.put(`https://mallikas-store-server.vercel.app//orders/${currentOrderId}`, {
+        axios.put(`https://mallikas-store-server.vercel.app/orders/${currentOrderId}`, {
             deliveredDate,
             paymentMode,
             status: 'Delivered'
@@ -149,7 +149,7 @@ export default function Admin() {
     const handleCancelOrder = (orderId) => {
         if (!window.confirm('Are you sure you want to cancel this order?')) return;
 
-        axios.put(`https://mallikas-store-server.vercel.app//orders/${orderId}`, {
+        axios.put(`https://mallikas-store-server.vercel.app/orders/${orderId}`, {
             status: 'Cancelled'
         }).then(() => {
             fetchOrders();

@@ -26,7 +26,7 @@ export default function Apparels() {
 
     const fetchItems = async () => {
         try {
-            const response = await axios.get('https://mallikas-store-server.vercel.app//items');
+            const response = await axios.get('https://mallikas-store-server.vercel.app/items');
             const sortedItems = response.data
                 .filter(item => item.category === 'apparel')
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -49,7 +49,7 @@ export default function Apparels() {
         accessories_sizes: []
     });
     useEffect(() => {
-        axios.get('https://mallikas-store-server.vercel.app//Baseline')
+        axios.get('https://mallikas-store-server.vercel.app/Baseline')
             .then(res => {
                 if (res.data) setBaseline(res.data);
             })
@@ -136,7 +136,7 @@ export default function Apparels() {
     const handleEditItemSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`https://mallikas-store-server.vercel.app//items/${editItem._id}`, editItem);
+            await axios.put(`https://mallikas-store-server.vercel.app/items/${editItem._id}`, editItem);
             alert('Item updated successfully');
             const modalEl = document.getElementById('EditItemModal');
             const modal = window.bootstrap.Modal.getInstance(modalEl);
@@ -322,7 +322,7 @@ export default function Apparels() {
                                             className='btn btn-sm btn-outline-danger'
                                             onClick={() => {
                                                 if (window.confirm('Are you sure you want to delete this item?')) {
-                                                    axios.delete(`https://mallikas-store-server.vercel.app//items/${item._id}`).then(() => {
+                                                    axios.delete(`https://mallikas-store-server.vercel.app/items/${item._id}`).then(() => {
                                                         alert('Deleted successfully');
                                                         fetchItems();
                                                     });
