@@ -26,7 +26,7 @@ export default function Accessories() {
 
     const fetchItems = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/items');
+            const response = await axios.get('https://mallikas-store-server.vercel.app//items');
             const sortedItems = response.data
                 .filter(item => item.category === 'accessories')
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -50,7 +50,7 @@ export default function Accessories() {
     });
 
     useEffect(() => {
-        axios.get('http://localhost:3001/Baseline')
+        axios.get('https://mallikas-store-server.vercel.app//Baseline')
             .then(res => {
                 if (res.data) setBaseline(res.data);
             })
@@ -137,7 +137,7 @@ export default function Accessories() {
     const handleEditItemSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:3001/items/${editItem._id}`, editItem);
+            await axios.put(`https://mallikas-store-server.vercel.app//items/${editItem._id}`, editItem);
             alert('Item updated successfully');
             const modalEl = document.getElementById('EditItemModal');
             const modal = window.bootstrap.Modal.getInstance(modalEl);
@@ -323,7 +323,7 @@ export default function Accessories() {
                                             className='btn btn-sm btn-outline-danger'
                                             onClick={() => {
                                                 if (window.confirm('Are you sure you want to delete this item?')) {
-                                                    axios.delete(`http://localhost:3001/items/${item._id}`).then(() => {
+                                                    axios.delete(`https://mallikas-store-server.vercel.app//items/${item._id}`).then(() => {
                                                         alert('Deleted successfully');
                                                         fetchItems();
                                                     });

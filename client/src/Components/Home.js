@@ -7,7 +7,7 @@ export default function Home() {
     const [items, setItems] = useState([]);
     const fetchItems = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/items');
+            const response = await axios.get('https://mallikas-store-server.vercel.app//items');
             const sortedItems = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setItems(sortedItems);
         } catch (error) {

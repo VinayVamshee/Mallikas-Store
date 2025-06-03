@@ -54,7 +54,7 @@ export default function Navigation() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:3001/login', loginUser);
+            const res = await axios.post('https://mallikas-store-server.vercel.app//login', loginUser);
             if (res.data.token) {
                 localStorage.setItem('token', res.data.token);
                 alert('Login successful!');
@@ -70,7 +70,7 @@ export default function Navigation() {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:3001/register', {
+            const res = await axios.post('https://mallikas-store-server.vercel.app//register', {
                 ...registerUser,
                 isAdmin: false
             });
@@ -100,7 +100,7 @@ export default function Navigation() {
     const [baselineInputs, setBaselineInputs] = useState({});
 
     useEffect(() => {
-        axios.get('http://localhost:3001/Baseline')
+        axios.get('https://mallikas-store-server.vercel.app//Baseline')
             .then(res => {
                 if (res.data) setBaseline(res.data);
             })
@@ -114,7 +114,7 @@ export default function Navigation() {
         delete dataToSend._id;
         delete dataToSend.__v;
 
-        axios.post('http://localhost:3001/Baseline', dataToSend)
+        axios.post('https://mallikas-store-server.vercel.app//Baseline', dataToSend)
             .then(res => {
                 alert('Baseline updated successfully');
             })
@@ -151,7 +151,7 @@ export default function Navigation() {
         e.preventDefault();
         try {
             // eslint-disable-next-line
-            const response = await axios.post('http://localhost:3001/items', item);
+            const response = await axios.post('https://mallikas-store-server.vercel.app//items', item);
             alert('Item saved successfully!');
             setItem({ name: '', category: 'apparel', sub_category: '', color: '', size: '', description: '', mainImage: '', otherImages: [''], available: true });
             window.location.reload();
