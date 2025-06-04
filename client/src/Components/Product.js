@@ -124,7 +124,7 @@ export default function Product() {
     const shareUrl = window.location.href;
 
     return (
-        <div className="mt-5 product-detail">
+        <div className="mt-3 product-detail">
 
             {/* Images */}
             <div className="images">

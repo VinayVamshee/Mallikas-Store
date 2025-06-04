@@ -74,21 +74,29 @@ export default function Home() {
                 <h1>New Arrivals</h1>
 
                 <div className='items'>
+                    {items.length === 0 ? (
+                        <div className="text-center my-4">
+                            <span className="spinner-border tex" role="status" />
+                            <div>Loading...</div>
+                        </div>
+                    ) : (
+                        items.slice(-20).map((item, index) => (
+                            <Link
+                                to="/Product"
+                                state={{ item }}
+                                key={index}
+                                className="item text-decoration-none text-dark"
+                            >
+                                <img src={item.mainImage} alt={item.name} />
+                                <div className="item-info">
+                                    <div className="item-name">{item.name}</div>
+                                    <div className="item-specifics">{item.color} - {item.size}</div>
+                                    <div className="item-price">${item.price}</div>
+                                </div>
+                            </Link>
+                        ))
+                    )}
 
-                    {
-                        items.slice(-20).map((item, index) => {
-                            return (
-                                <Link to="/Product" state={{ item }} key={index} className='item text-decoration-none text-dark' >
-                                    <img src={item.mainImage} alt={item.name} />
-                                    <div className='item-info'>
-                                        <div className='item-name'>{item.name}</div>
-                                        <div className='item-specifics'>{item.color} - {item.size}</div>
-                                        <div className='item-price'>${item.price}</div>
-                                    </div>
-                                </Link>
-                            )
-                        })
-                    }
                 </div>
             </div>
 

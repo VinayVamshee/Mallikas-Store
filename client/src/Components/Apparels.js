@@ -24,7 +24,10 @@ export default function Apparels() {
 
     const [items, setItems] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
     const fetchItems = async () => {
+        setLoading(true); // Start spinner
         try {
             const response = await axios.get('https://mallikas-store-server.vercel.app/items');
             const sortedItems = response.data
@@ -33,6 +36,8 @@ export default function Apparels() {
             setItems(sortedItems);
         } catch (error) {
             console.error('Failed to fetch items:', error);
+        } finally {
+            setLoading(false); // Stop spinner
         }
     };
 
@@ -411,53 +416,73 @@ export default function Apparels() {
                 </div>
 
                 <div className='items'>
-                    {filteredItems.map((item, index) => (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                            <Link to="/Product" state={{ item }} key={index} className='item text-decoration-none text-dark' >
-                                <img src={item.mainImage} alt={item.name} />
-                                <div className='item-info'>
-                                    <div className='item-name'>{item.name}</div>
-                                    <div className='item-specifics'>{item.color} - {item.size}</div>
-                                    <div className='item-price'>${item.price}</div>
-
-
+                    {loading ? (
+                            <div className="d-flex flex-column align-items-center my-4">
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
-                            </Link>
-                            {
-                                isAdmin ?
-                                    <div className=''>
-                                        <button
-                                            className='btn btn-sm btn-outline-info me-2'
-                                            data-bs-toggle='modal'
-                                            data-bs-target='#EditItemModal'
-                                            onClick={() => setEditItem({
-                                                ...item,
-                                                otherImages: Array.isArray(item.otherImages) ? item.otherImages : [''],
-                                            })}
-                                        >
-                                            Edit
-                                        </button>
+                                <div className="mt-2">Loading items...</div>
+                            </div>
+                        ) : filteredItems.length === 0 ? (
+                            <div className="text-center my-4 text-muted">
+                                No items found for the selected filters.
+                            </div>
+                        ) : (
+                            filteredItems.map((item, index) => (
+                                <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                    <Link
+                                        to="/Product"
+                                        state={{ item }}
+                                        className='item text-decoration-none text-dark'
+                                    >
+                                        <img src={item.mainImage} alt={item.name} />
+                                        <div className='item-info'>
+                                            <div className='item-name'>{item.name}</div>
+                                            <div className='item-specifics'>{item.color} - {item.size}</div>
+                                            <div className='item-price'>${item.price}</div>
+                                        </div>
+                                    </Link>
 
-                                        <button
-                                            className='btn btn-sm btn-outline-danger'
-                                            onClick={() => {
-                                                if (window.confirm('Are you sure you want to delete this item?')) {
-                                                    axios.delete(`https://mallikas-store-server.vercel.app/items/${item._id}`).then(() => {
-                                                        alert('Deleted successfully');
-                                                        fetchItems();
-                                                    });
+                                    {isAdmin && (
+                                        <div>
+                                            <button
+                                                className='btn btn-sm btn-outline-info me-2'
+                                                data-bs-toggle='modal'
+                                                data-bs-target='#EditItemModal'
+                                                onClick={() =>
+                                                    setEditItem({
+                                                        ...item,
+                                                        otherImages: Array.isArray(item.otherImages)
+                                                            ? item.otherImages
+                                                            : [''],
+                                                    })
                                                 }
-                                            }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                    :
-                                    null
-                            }
-                        </div>
-                    ))}
+                                            >
+                                                Edit
+                                            </button>
+
+                                            <button
+                                                className='btn btn-sm btn-outline-danger'
+                                                onClick={() => {
+                                                    if (window.confirm('Are you sure you want to delete this item?')) {
+                                                        axios
+                                                            .delete(`https://mallikas-store-server.vercel.app/items/${item._id}`)
+                                                            .then(() => {
+                                                                alert('Deleted successfully');
+                                                                fetchItems();
+                                                            });
+                                                    }
+                                                }}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        )}
                 </div>
+
 
                 <div className='modal fade' id='EditItemModal' tabIndex='-1' aria-hidden='true'>
                     <div className='modal-dialog modal-dialog-scrollable modal-lg'>
