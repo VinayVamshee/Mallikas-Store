@@ -152,7 +152,7 @@ export default function Apparels() {
             <div className='filters'>
 
                 <div className='filter-reset mb-3'>
-                    <i className="fa-solid fa-filter fa-lg"></i> Filter ||
+                    <i className="fa-solid fa-filter fa-lg"></i> Filter
                     <button className='btn' onClick={() => setFilterType({ category: [], size: [], color: [] })}>
                         Reset
                     </button>
@@ -273,7 +273,7 @@ export default function Apparels() {
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
                         />
-                        <button className='btn' type='submit'>
+                        <button className='btn search-btn' type='submit'>
                             <i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search
                         </button>
                     </form>
@@ -288,11 +288,131 @@ export default function Apparels() {
                             <li><button className="dropdown-item" onClick={() => setSortOption('priceLow')}>Price: Low to High</button></li>
                         </ul>
                     </div>
+
+                    <div className="dropdown mobile-filters">
+                        <button
+                            className="btn dropdown-toggle"
+                            type="button"
+                            id="filtersDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            Filters
+                        </button>
+                        <ul className="dropdown-menu" aria-labelledby="filtersDropdown" style={{ minWidth: 'auto' }}>
+                            <li>
+                                <button
+                                    className="dropdown-item"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#CategoriesFilterCollapse"
+                                    aria-expanded="false"
+                                    aria-controls="CategoriesFilterCollapse"
+                                >
+                                    Categories
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="dropdown-item"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#SizesFilterCollapse"
+                                    aria-expanded="false"
+                                    aria-controls="SizesFilterCollapse"
+                                >
+                                    Sizes
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="dropdown-item"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#ColorsFilterCollapse"
+                                    aria-expanded="false"
+                                    aria-controls="ColorsFilterCollapse"
+                                >
+                                    Colors
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div className="collapse mobile-collapse w-100" id="CategoriesFilterCollapse">
+                    <div className="card card-body">
+                        {baseline.apparels_category && baseline.apparels_category.length > 0 ? (
+                            baseline.apparels_category.map((cat, i) => {
+                                const val = cat.toLowerCase();
+                                return (
+                                    <label key={i}>
+                                        <input
+                                            type="checkbox"
+                                            value={val}
+                                            checked={filterType.category.includes(val)}
+                                            onChange={() => handleFilterChange('category', val)}
+                                        /> {cat}
+                                    </label>
+                                );
+                            })
+                        ) : (
+                            <p>No categories available</p>
+                        )}
+
+                    </div>
+                </div>
+
+                <div className="collapse mobile-collapse w-100" id="SizesFilterCollapse">
+                    <div className="card card-body">
+                        {baseline.apparels_sizes && baseline.apparels_sizes.length > 0 ? (
+                            baseline.apparels_sizes.map((size, i) => {
+                                const val = size.toLowerCase();
+                                return (
+                                    <label key={i}>
+                                        <input
+                                            type="checkbox"
+                                            value={val}
+                                            checked={filterType.size.includes(val)}
+                                            onChange={() => handleFilterChange('size', val)}
+                                        /> {size.toUpperCase()}
+                                    </label>
+                                );
+                            })
+                        ) : (
+                            <p>No sizes available</p>
+                        )}
+
+                    </div>
+                </div>
+
+                <div className="collapse mobile-collapse w-100" id="ColorsFilterCollapse">
+                    <div className="card card-body">
+                        {baseline.apparels_colors && baseline.apparels_colors.length > 0 ? (
+                            baseline.apparels_colors.map((color, i) => {
+                                const val = color.toLowerCase();
+                                return (
+                                    <label key={i}>
+                                        <input
+                                            type="checkbox"
+                                            value={val}
+                                            checked={filterType.color.includes(val)}
+                                            onChange={() => handleFilterChange('color', val)}
+                                        /> {color}
+                                    </label>
+                                );
+                            })
+                        ) : (
+                            <p>No colors available</p>
+                        )}
+
+                    </div>
                 </div>
 
                 <div className='items'>
                     {filteredItems.map((item, index) => (
-                        <div style={{display:'flex', flexDirection:'column', gap:'5px'}}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                             <Link to="/Product" state={{ item }} key={index} className='item text-decoration-none text-dark' >
                                 <img src={item.mainImage} alt={item.name} />
                                 <div className='item-info'>

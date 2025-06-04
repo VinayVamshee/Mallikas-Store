@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode';
 import { Link, useNavigate } from 'react-router-dom'
+import logo from './android-chrome-512x512.png';
 
 export default function Navigation() {
 
@@ -162,58 +163,17 @@ export default function Navigation() {
 
     return (
         <div>
-
-            {/* Mobile Navigation */}
-            <nav className="navbar navbar-expand-lg">
-                <div className="container-fluid">
-                    <a className="navbar-brand" href="/">Mallika's Store</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <form className="d-flex" role="search" style={{ flex: '1' }}>
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-sm btn-outline-success" type="submit">Search</button>
-                    </form>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="...">Home</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="...">Link</a>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="..." role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" href="...">Action</a></li>
-                                    <li><a className="dropdown-item" href="...">Another action</a></li>
-
-                                    <li><a className="dropdown-item" href="...">Something else here</a></li>
-                                </ul>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link disabled" href='...' aria-disabled="true">Disabled</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-
-
             {/* Navigation */}
             <div className='navigation'>
-                <Link to="/" className='logo'><i className="fa-solid fa-shop fa-lg me-2"></i>Mallika's Store</Link>
-                <form><input type='text' placeholder='Search' /><button className='btn'><i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search</button></form>
+                <Link to="/" className='logo'><img src={logo} alt='...'/><strong>Mallika's Store</strong></Link>
+                <form><input type='text' placeholder='Search' /><button className='btn search-btn'><i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search</button></form>
                 <div className='profile'>
                     {isLoggedIn ? (
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '5px', width: '100%' }}>
                             {/* Redirect Button */}
-                            <button className={`btn btn-sm ${isAdmin ? 'btn-danger' : 'btn-info'} me-2`}
+                            <button className={`btn profile-btn btn-sm ${isAdmin ? 'btn-danger' : 'btn-info'} me-2`}
                                 onClick={() => navigate(isAdmin ? '/Admin' : '/User')} >
-                                <i className='fa-solid fa-user fa-lg me-2'></i>{isAdmin ? 'Admin Profile' : 'User Profile'}
+                                <i className='fa-solid fa-user fa-lg'></i><div>Profile</div>
                             </button>
 
                             {/* Admin-only buttons */}

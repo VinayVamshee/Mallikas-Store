@@ -1,5 +1,5 @@
 * {
-   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: medium;
     scroll-behavior: smooth;
 }
@@ -43,6 +43,13 @@ body,
 }
 
 .navigation .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navigation .logo strong {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: x-large;
     text-decoration: none;
@@ -60,7 +67,7 @@ body,
     align-items: center;
 }
 
-.modal-content  .form {
+.modal-content .form {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -114,8 +121,8 @@ Link {
 
 .new-arrivals {
     padding-top: 20px;
-    padding-left: 70px;
-    padding-right: 70px;
+    padding-left: 50px;
+    padding-right: 50px;
     text-align: center;
 }
 
@@ -242,6 +249,7 @@ Link {
     padding: 10px;
 
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     align-items: center;
     text-align: center;
@@ -334,8 +342,8 @@ Link {
     border: 0.5px solid rgba(128, 128, 128, 0.446);
     border-radius: 5px;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.063);
-    width: 600px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     opacity: 1;
     transition: opacity 0.3s ease-in-out forwards;
@@ -414,9 +422,7 @@ Link {
     text-align: start;
 }
 
-.user-dashboard .btn:hover {
-
-}
+.user-dashboard .btn:hover {}
 
 .user .user-information {
     width: 100%;
@@ -437,7 +443,7 @@ Link {
 .cart-item {
     display: flex;
     padding: 10px;
-   
+
 }
 
 .unavailable-item {
@@ -458,30 +464,31 @@ Link {
 
 
 .cart-item-info {
-     border: 0.5px solid gray;
-     padding: 10px;
-     width: 100%;
-     margin-right: 2px;
+    border: 0.5px solid gray;
+    padding: 10px;
+    width: 100%;
+    margin-right: 2px;
 }
 
 .cart-item-quantity {
-     border: 0.5px solid gray;
+    border: 0.5px solid gray;
     white-space: nowrap;
     padding: 10px;
-    border-top-right-radius: 10px ;
-     border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
+
 .net-value {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 10px;
     border: 0.5px solid gray;
-    border-radius: 10px;   
+    border-radius: 10px;
 }
 
 .net-value h5 {
-font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .blink-box {
@@ -499,5 +506,210 @@ font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
     50% {
         box-shadow: 5px 5px 10px blue, 0 0 20px red;
+    }
+}
+
+.navigation .logo img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+@media (max-width: 1240px) {
+    .filter-reset {
+        white-space: nowrap;
+    }
+
+    .filter-reset i {
+        display: none;
+    }
+}
+
+@media (max-width: 1060px) {
+    .filters {
+        width: 25%;
+    }
+}
+
+@media (max-width: 930px) {
+    .filters {
+        width: 30%;
+    }
+}
+
+@media (max-width: 780px) {
+
+
+    .apparels {
+        padding: 10px 15px;
+    }
+
+    .filters {
+        padding: 10px;
+        width: 40%;
+    }
+}
+
+@media (max-width: 700px) {
+    .apparels .apparel-content .items {
+        padding-left: 10px;
+    }
+}
+
+@media (max-width: 615px) {
+    .navigation form .search-btn {
+        display: none;
+    }
+
+    .navigation .logo strong {
+        font-size: large;
+        display: none;
+    }
+
+    .apparel-search {
+        white-space: nowrap;
+    }
+}
+.navigation .profile .profile-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        white-space: nowrap;
+        gap: 5px;
+    }
+
+@media (max-width: 600px) {
+    .filters .collapse .card-body {
+        white-space: nowrap;
+    }
+
+    .apparel-search .search-btn {
+        display: none;
+    }
+
+    .product-detail {
+        flex-wrap: wrap;
+    }
+
+    .navigation .logo img {
+        width: 25px;
+        margin-right: 0px;
+    }
+
+    .navigation .profile .profile-btn {
+        border-radius: 5px;
+        padding: 15px 10px;
+    }
+
+    .navigation .profile .profile-btn div {
+        display: none;
+    }
+
+    .navigation .profile button {
+        padding: 5px;
+    }
+
+    .product-detail .images {
+        width: 100%;
+    }
+
+    .product-detail .images  .selectedImage {
+        height: 500px;
+    }
+
+    .cart-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cart-item img {
+        width: 100%;
+        height: 250px;
+    }
+}
+
+@media (max-width: 560px) {
+
+    .filters {
+        width: 50%;
+    }
+}
+
+.mobile-filters {
+    display: none;
+}
+
+.mobile-collapse {
+    display: none;
+}
+
+@media (max-width: 500px) {
+
+    .filters {
+        display: none;
+    }
+
+    .mobile-filters {
+        display: block;
+        margin-left: 5px;
+    }
+
+    .mobile-collapse {
+        display: contents;
+    }
+
+    .apparel-search form {
+        padding-left: 10px;
+    }
+}
+
+@media (max-width: 475px) {
+    .home .shop-types .btn {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        justify-content: space-between;
+        align-items: center;
+
+        height: 100%;
+        padding: 5px;
+    }
+
+    .home .shop-types .btn i {
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 440px) {
+
+    * {
+        font-size: medium;
+    }
+
+    .apparel-search {
+        overflow: scroll;
+    }
+
+    .new-arrivals {
+        padding-top: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .apparels .apparel-content .items {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 12px;
+    }
+
+
+    .apparels .apparel-content .items .item {
+        width: 100%;
+    }
+
+    .apparels .apparel-content .items .item img {
+        height: 100%;
     }
 }
