@@ -160,7 +160,7 @@ export default function Admin() {
 
 
     return (
-        <div className="container my-4">
+        <div className="container my-4" style={{marginTop:'78px'}}>
             <h2 className="mb-4">Admin Orders Dashboard</h2>
 
             {/* Sort dropdown */}
@@ -176,7 +176,7 @@ export default function Admin() {
                     <option value="latest-asc">Oldest to Latest</option>
                     <option value="price-desc">Highest Price to Lowest</option>
                     <option value="price-asc">Lowest Price to Highest</option>
-                    <option value="delivered">Delivered Orders</option>
+                    <option value="Delivered">Delivered Orders</option>
                     <option value="pending">Pending Orders</option>
                     <option value="cancelled">Cancelled Orders</option>
                 </select>

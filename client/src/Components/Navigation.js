@@ -165,7 +165,7 @@ export default function Navigation() {
         <div>
             {/* Navigation */}
             <div className='navigation'>
-                <Link to="/" className='logo'><img src={logo} alt='...'/><strong>Mallika's Store</strong></Link>
+                <Link to="/" className='logo'><img src={logo} alt='...' /><strong>Maguva's Collection</strong></Link>
                 <form><input type='text' placeholder='Search' /><button className='btn search-btn'><i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search</button></form>
                 <div className='profile'>
                     {isLoggedIn ? (
@@ -204,7 +204,7 @@ export default function Navigation() {
                 </div>
 
                 {/* Add Item Modal */}
-                <div className='modal fade' id='AddItemModal' tabIndex='-1' aria-hidden='true'>
+                <div className='modal fade' id='AddItemModal' tabIndex='-1' aria-hidden='true' data-bs-backdrop='false'>
                     <div className='modal-dialog modal-dialog-scrollable modal-lg'>
                         <div className='modal-content'>
                             <div className='modal-header'>
@@ -366,7 +366,7 @@ export default function Navigation() {
 
 
 
-                <div className='modal fade' id='LoginRegisterModal' aria-hidden='true' aria-labelledby='LoginRegisterModalLabel' tabIndex='-1'>
+                <div className='modal fade' id='LoginRegisterModal' aria-hidden='true' aria-labelledby='LoginRegisterModalLabel' tabIndex='-1' data-bs-backdrop='false'>
                     <div className='modal-dialog modal-dialog-centered'>
                         <div className='modal-content'>
                             <div className='modal-header'>
@@ -486,13 +486,12 @@ export default function Navigation() {
                                                         className="btn btn-sm btn-sm btn-outline-danger"
                                                         style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, paddingLeft: '0.75rem', paddingRight: '0.75rem' }}
                                                         onClick={() => {
-                                                            console.log('Adding to:', key, baselineInputs[key].trim());
-
                                                             setBaseline(prev => ({
                                                                 ...prev,
-                                                                [key]: prev[key].filter((_, i) => i !== idx),
+                                                                [key]: (prev[key] || []).filter((_, i) => i !== idx),
                                                             }));
                                                         }}
+
                                                     >
                                                         Remove
                                                     </button>

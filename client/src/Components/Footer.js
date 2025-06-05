@@ -66,7 +66,7 @@ export default function Footer() {
 
                         {/* Store Name */}
                         <div className="text-end mt-3 mt-md-0">
-                            © Mallika's Store, Since 2020
+                            © Maguva's Collection, Since 2020
                         </div>
                     </div>
 
@@ -86,7 +86,7 @@ export default function Footer() {
                     <div className="modal-content shadow-lg rounded-4">
                         <div className="modal-header bg-primary text-white">
                             <h5 className="modal-title fw-bold" id="featuresModalLabel">
-                                Features of Mallika's Store
+                                Features of Maguva's Collection
                             </h5>
                             <button
                                 type="button"
@@ -136,7 +136,7 @@ export default function Footer() {
                     <div className="modal-content shadow-lg rounded-4">
                         <div className="modal-header border-bottom shadow-sm">
                             <h1 className="modal-title fs-4 fw-bold text-primary" id="aboutModalLabel">
-                                About Mallika's Store
+                                About Maguva's Collection
                             </h1>
                             <button
                                 type="button"
@@ -150,7 +150,7 @@ export default function Footer() {
                             {/* Intro Section */}
                             <section className="mb-4 p-3 border rounded shadow-sm bg-light">
                                 <p>
-                                    <strong>Mallika's Store</strong> is a stylish and modern e-commerce platform dedicated to women's fashion.
+                                    <strong>Maguva's Collection</strong> is a stylish and modern e-commerce platform dedicated to women's fashion.
                                     We offer a curated collection of ethnic and contemporary wear, along with elegant accessories.
                                 </p>
                             </section>

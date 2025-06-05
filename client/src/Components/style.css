@@ -11,10 +11,11 @@ body,
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: rgb(255, 245, 252);
 }
 
-.navbar {
-    display: none;
+.modal {
+    background-color: rgba(0, 0, 0, 0.596);
 }
 
 .navigation {
@@ -25,14 +26,24 @@ body,
 
     padding: 20px 10px;
     border-bottom: 0.5px solid lightgray;
+    background-color: black;
+    color: white;
 
-    background-color: white;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 999;
 }
 
 .navigation form {
     flex: 1;
     display: flex;
     gap: 5px;
+}
+.navigation form .btn {
+     color: white;
+     border: white 1px solid ;
 }
 
 .navigation form input {
@@ -47,14 +58,13 @@ body,
     justify-content: center;
     align-items: center;
     text-decoration: none;
+     color: white;
 }
 
 .navigation .logo strong {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: x-large;
     text-decoration: none;
-    color: black;
-
     text-align: center;
 }
 
@@ -76,6 +86,7 @@ body,
 }
 
 .home {
+    margin-top: 78px;
     margin-bottom: 20px;
 }
 
@@ -130,18 +141,20 @@ Link {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     border-bottom: 0.5px solid grey;
     padding: 10px;
-
     background-color: black;
     color: white;
+    position: sticky;
+    top: 78px;
+    z-index: 100;
+    margin-bottom: 15px;
 }
 
 .items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
 
-    background-color: rgba(131, 131, 131, 0.051);
-    padding: 5px;
+    margin-bottom: 20px;
 }
 
 
@@ -151,34 +164,43 @@ Link {
     align-items: center;
     justify-content: center;
 
-    border: 0.5px solid lightgray;
+    border: 1px solid rgb(211, 211, 211);
+    border-radius: 10px;
     transition: 0.4s ease-in-out;
     overflow: hidden;
+
+    background-color: black;
 }
 
 .item:hover {
     cursor: pointer;
     transform: scale(1.04);
     border: 1px solid white;
-    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.443);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.549);
+}
+
+.item:hover img {
+    filter: brightness(1.1);
 }
 
 .item img {
     width: 100%;
-    height: 300px;
+    height: 350px;
     padding: 5px;
-    object-fit: contain;
+    object-fit: cover;
     background-color: white;
+    transition: 0.4s ease-in-out;
 }
 
 .item .item-info {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    background-color: rgba(0, 0, 0, 0.075);
+
     width: 100%;
     padding: 10px;
     text-align: start;
+    color: white;
 }
 
 /* 
@@ -218,9 +240,9 @@ Link {
 }
 
 .apparels {
+      margin-top: 78px;
     display: flex;
     min-height: 100vh;
-    padding: 30px 20px;
 }
 
 .filters {
@@ -243,21 +265,23 @@ Link {
 }
 
 .filters .filter-reset {
-    background-color: white;
-    color: black;
-    width: 100%;
-    padding: 10px;
-
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    justify-content: center;
+  background-color: white;
+  width: 100%;
+  color: black;
+  padding: 10px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .filters .filter-reset .btn {
-    background-color: rgba(128, 128, 128, 0.235);
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 4px;
 }
 
 .filters .collapse .card-body {
@@ -274,6 +298,7 @@ Link {
 
 .apparels .apparel-search {
     display: flex;
+    gap: 5px;
     background-color: black;
     padding: 10px;
     padding-left: 0px;
@@ -317,11 +342,11 @@ Link {
 
 .apparels .apparel-content .items {
     padding-left: 50px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .apparels .apparel-content .items .item img {
-    height: 250px;
+    height: 300px;
     width: 100%;
 }
 
@@ -330,11 +355,20 @@ Link {
 }
 
 .product-detail {
+      margin-top: 78px;
     padding: 20px;
     display: flex;
+    flex-direction: column;
     gap: 20px;
     justify-content: space-between;
     align-items: flex-start;
+    min-height: 80vh;
+}
+
+.product-detail .product {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .product-detail .selectedImage {
@@ -343,10 +377,11 @@ Link {
     border-radius: 5px;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.063);
     width: 100%;
-    height: 100%;
+    height: 550px;
     object-fit: contain;
     opacity: 1;
     transition: opacity 0.3s ease-in-out forwards;
+    background-color: white;
 }
 
 .product-detail .images {
@@ -355,13 +390,14 @@ Link {
     gap: 10px;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .product-detail .images .otherImages {
     display: flex;
     gap: 10px;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     overflow: scroll;
     width: 100%;
 }
@@ -409,7 +445,7 @@ Link {
     width: 20%;
     min-height: 70vh;
 
-    background-color: rgba(0, 0, 0, 0.057);
+    background-color: rgba(250, 205, 255, 0.384);
 }
 
 .user-dashboard .btn {
@@ -433,6 +469,7 @@ Link {
 .userprofile {
     width: 100%;
     padding: 20px;
+
 }
 
 .cart-info {
@@ -537,12 +574,20 @@ Link {
     }
 }
 
-@media (max-width: 780px) {
-
-
-    .apparels {
-        padding: 10px 15px;
+@media(max-width: 800px) {
+    .product-detail .product {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
     }
+
+    .product-detail .product-info {
+        width: 100%;
+    }
+}
+
+@media (max-width: 780px) {
 
     .filters {
         padding: 10px;
@@ -550,19 +595,31 @@ Link {
     }
 }
 
+@media (max-width: 720px) {
+
+    .items {
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          padding: 0px;
+    }
+    .new-arrivals {
+        padding: 10px;
+    }
+
+
+    .navigation .logo strong {
+        display: none;
+    }
+
+}
+
 @media (max-width: 700px) {
     .apparels .apparel-content .items {
-        padding-left: 10px;
+        padding: 10px;
     }
 }
 
 @media (max-width: 615px) {
     .navigation form .search-btn {
-        display: none;
-    }
-
-    .navigation .logo strong {
-        font-size: large;
         display: none;
     }
 
@@ -580,7 +637,21 @@ Link {
     gap: 5px;
 }
 
+.mobile-filters {
+    display: none;
+}
+
 @media (max-width: 600px) {
+
+     .filters {
+        display: none;
+    }
+
+    .mobile-filters {
+        display: block;
+        margin-left: 5px;
+    }
+    
     .filters .collapse .card-body {
         white-space: nowrap;
     }
@@ -641,31 +712,28 @@ Link {
     }
 }
 
-.mobile-filters {
-    display: none;
-}
-
 .mobile-collapse {
     display: none;
 }
 
 @media (max-width: 500px) {
 
-    .filters {
+    .apparels .apparel-search form {
         display: none;
-    }
-
-    .mobile-filters {
-        display: block;
-        margin-left: 5px;
     }
 
     .mobile-collapse {
         display: contents;
     }
 
-    .apparel-search form {
-        padding-left: 10px;
+    .apparels .apparel-content .items {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+    }
+
+    .apparels .apparel-search {
+        padding-left: 5px;
+        justify-content: flex-start;
     }
 }
 
@@ -693,8 +761,6 @@ Link {
         font-size: medium;
     }
 
-    
-
     .new-arrivals {
         padding-top: 20px;
         padding-left: 15px;
@@ -702,10 +768,7 @@ Link {
     }
 
     .apparels .apparel-content .items {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 12px;
     }
 
@@ -715,10 +778,15 @@ Link {
     }
 
     .apparels .apparel-content .items .item img {
-        height: 100%;
+        width: 100%;
     }
+}
 
-    .apparels .apparel-search i {
-        display: none;
-    }
+.list-group-item {}
+
+.product-info {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.286);
 }

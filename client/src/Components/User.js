@@ -338,7 +338,7 @@ const renderOrders = () => {
 
             {/* Filter Buttons */}
             <div className="mb-3 d-flex gap-2 flex-wrap">
-                {['all', 'pending', 'delivered', 'cancelled'].map(status => (
+                {['all', 'pending', 'Delivered', 'cancelled'].map(status => (
                     <button
                         key={status}
                         className={`btn btn-sm ${filterStatus === status ? 'btn-info' : 'btn-outline-info'}`}
@@ -363,7 +363,7 @@ const renderOrders = () => {
                         </div>
 
                         <div className="mb-2">
-                            <strong>Status:</strong> <span className={`badge p-2 bg-${order.status === 'cancelled' ? 'danger' : order.status === 'delivered' ? 'success' : 'warning'}`}>
+                            <strong>Status:</strong> <span className={`badge p-2 bg-${order.status === 'cancelled' ? 'danger' : order.status === 'Delivered' ? 'success' : 'warning'}`}>
                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                             </span>
                         </div>
@@ -424,7 +424,7 @@ const renderOrders = () => {
 };
 
     return (
-        <div className='user'>
+        <div className='user' style={{marginTop:'78px'}}>
             <div className='user-dashboard'>
                 <button className='btn ' onClick={() => setSection('profile')}>
                     <i className="fa-solid fa-circle-user me-2"></i>Profile

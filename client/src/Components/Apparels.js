@@ -64,7 +64,7 @@ export default function Apparels() {
     const [filterType, setFilterType] = useState({
         category: [],
         size: [],
-        color: []
+        color: [],
     });
 
     const handleFilterChange = (type, value) => {
@@ -155,136 +155,129 @@ export default function Apparels() {
     return (
         <div className='apparels'>
             <div className='filters'>
-
-                <div className='filter-reset mb-3'>
-                    <i className="fa-solid fa-filter fa-lg"></i> Filter
-                    <button className='btn' onClick={() => setFilterType({ category: [], size: [], color: [] })}>
+                <div className="filter-reset mb-4 rounded px-3 py-2 bg-white shadow-sm">
+                    <div className="d-flex align-items-center gap-2 text-dark me-2">
+                        <i className="fa-solid fa-filter fa-lg"></i>
+                        <span className="fw-semibold">Filter</span>
+                    </div>
+                    <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => setFilterType({ category: [], size: [], color: [] })}
+                    >
                         Reset
                     </button>
                 </div>
 
 
-                {/* Categories */}
-                <button
-                    className="btn w-100 text-light mb-2"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#CategoriesFilterCollapse"
-                    aria-expanded="false"
-                    aria-controls="CategoriesFilterCollapse"
-                >
-                    Categories
-                </button>
-                <div className="collapse w-100" id="CategoriesFilterCollapse">
-                    <div className="card card-body">
-                        {baseline.apparels_category && baseline.apparels_category.length > 0 ? (
-                            baseline.apparels_category.map((cat, i) => {
-                                const val = cat.toLowerCase();
-                                return (
-                                    <label key={i}>
-                                        <input
-                                            type="checkbox"
-                                            value={val}
-                                            checked={filterType.category.includes(val)}
-                                            onChange={() => handleFilterChange('category', val)}
-                                        /> {cat}
-                                    </label>
-                                );
-                            })
-                        ) : (
-                            <p>No categories available</p>
-                        )}
+                {/* Filter Sidebar */}
+                <div className="w-100 mb-4">
+                    {/* Categories */}
+                    <div className="mb-4">
+                        <h5 className="text-white border-bottom pb-2">Categories</h5>
+                        <div className="list-group">
+                            {baseline.apparels_category && baseline.apparels_category.length > 0 ? (
+                                baseline.apparels_category.map((cat, i) => {
+                                    const val = cat.toLowerCase();
+                                    return (
+                                        <label key={i} className="list-group-item bg-dark text-white border-0">
+                                            <input
+                                                type="checkbox"
+                                                value={val}
+                                                checked={filterType.category.includes(val)}
+                                                onChange={() => handleFilterChange('category', val)}
+                                                className="form-check-input me-2"
+                                            />
+                                            {cat}
+                                        </label>
+                                    );
+                                })
+                            ) : (
+                                <div className="text-muted">No categories available</div>
+                            )}
+                        </div>
+                    </div>
 
+                    {/* Sizes */}
+                    <div className="mb-4">
+                        <h5 className="text-white border-bottom pb-2">Sizes</h5>
+                        <div className="list-group">
+                            {baseline.apparels_sizes && baseline.apparels_sizes.length > 0 ? (
+                                baseline.apparels_sizes.map((size, i) => {
+                                    const val = size.toLowerCase();
+                                    return (
+                                        <label key={i} className="list-group-item bg-dark text-white border-0">
+                                            <input
+                                                type="checkbox"
+                                                value={val}
+                                                checked={filterType.size.includes(val)}
+                                                onChange={() => handleFilterChange('size', val)}
+                                                className="form-check-input me-2"
+                                            />
+                                            {size.toUpperCase()}
+                                        </label>
+                                    );
+                                })
+                            ) : (
+                                <div className="text-muted">No sizes available</div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Colors */}
+                    <div className="mb-4">
+                        <h5 className="text-white border-bottom pb-2">Colors</h5>
+                        <div className="list-group">
+                            {baseline.apparels_colors && baseline.apparels_colors.length > 0 ? (
+                                baseline.apparels_colors.map((color, i) => {
+                                    const val = color.toLowerCase();
+                                    return (
+                                        <label key={i} className="list-group-item bg-dark text-white border-0">
+                                            <input
+                                                type="checkbox"
+                                                value={val}
+                                                checked={filterType.color.includes(val)}
+                                                onChange={() => handleFilterChange('color', val)}
+                                                className="form-check-input me-2"
+                                            />
+                                            {color}
+                                        </label>
+                                    );
+                                })
+                            ) : (
+                                <div className="text-muted">No colors available</div>
+                            )}
+                        </div>
                     </div>
                 </div>
-
-                {/* Sizes */}
-                <button
-                    className="btn w-100 text-light mb-2"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#SizesFilterCollapse"
-                    aria-expanded="false"
-                    aria-controls="SizesFilterCollapse"
-                >
-                    Sizes
-                </button>
-                <div className="collapse w-100" id="SizesFilterCollapse">
-                    <div className="card card-body">
-                        {baseline.apparels_sizes && baseline.apparels_sizes.length > 0 ? (
-                            baseline.apparels_sizes.map((size, i) => {
-                                const val = size.toLowerCase();
-                                return (
-                                    <label key={i}>
-                                        <input
-                                            type="checkbox"
-                                            value={val}
-                                            checked={filterType.size.includes(val)}
-                                            onChange={() => handleFilterChange('size', val)}
-                                        /> {size.toUpperCase()}
-                                    </label>
-                                );
-                            })
-                        ) : (
-                            <p>No sizes available</p>
-                        )}
-
-                    </div>
-                </div>
-
-                {/* Colors */}
-                <button
-                    className="btn w-100 text-light mb-2"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#ColorsFilterCollapse"
-                    aria-expanded="false"
-                    aria-controls="ColorsFilterCollapse"
-                >
-                    Colors
-                </button>
-                <div className="collapse w-100" id="ColorsFilterCollapse">
-                    <div className="card card-body">
-                        {baseline.apparels_colors && baseline.apparels_colors.length > 0 ? (
-                            baseline.apparels_colors.map((color, i) => {
-                                const val = color.toLowerCase();
-                                return (
-                                    <label key={i}>
-                                        <input
-                                            type="checkbox"
-                                            value={val}
-                                            checked={filterType.color.includes(val)}
-                                            onChange={() => handleFilterChange('color', val)}
-                                        /> {color}
-                                    </label>
-                                );
-                            })
-                        ) : (
-                            <p>No colors available</p>
-                        )}
-
-                    </div>
-                </div>
-
             </div>
 
 
             <div className='apparel-content'>
                 <div className='apparel-search'>
-                    <form onSubmit={e => e.preventDefault()}>
+                    {/* Search Form */}
+                    <form
+                        onSubmit={e => e.preventDefault()}
+                    >
                         <input
-                            alt='...'
+                            type='text'
+                            className='form-contro ms-1'
                             placeholder='Search Accessories'
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
                         />
-                        <button className='btn search-btn' type='submit'>
-                            <i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search
+                        <button type='submit' className='btn d-flex align-items-center ms-1'>
+                            <i className="fa-solid fa-magnifying-glass me-2"></i>Search
                         </button>
                     </form>
-                    <div className="dropdown ms-2">
-                        <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i className="fa-solid fa-sort fa-lg me-2"></i>Sort By
+
+                    {/* Sort Dropdown */}
+                    <div className="dropdown">
+                        <button
+                            className="btn btn-outline-secondary dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                        >
+                            <i className="fa-solid fa-sort me-2"></i>Sort By
                         </button>
                         <ul className="dropdown-menu">
                             <li><button className="dropdown-item" onClick={() => setSortOption('latest')}>Latest (New on Top)</button></li>
@@ -294,193 +287,142 @@ export default function Apparels() {
                         </ul>
                     </div>
 
-                    <div className="dropdown mobile-filters">
+                    {/* Mobile Filters Dropdown */}
+                    <div className="dropdown mobile-filters d-md-none">
                         <button
-                            className="btn dropdown-toggle"
+                            className="btn btn-outline-dark dropdown-toggle"
                             type="button"
-                            id="filtersDropdown"
                             data-bs-toggle="dropdown"
-                            aria-expanded="false"
                         >
-                            Filters
+                            <i className="fa-solid fa-sliders me-2"></i>Filters
                         </button>
-                        <ul className="dropdown-menu" aria-labelledby="filtersDropdown" style={{ minWidth: 'auto' }}>
+                        <ul className="dropdown-menu">
                             <li>
-                                <button
-                                    className="dropdown-item"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#CategoriesFilterCollapse"
-                                    aria-expanded="false"
-                                    aria-controls="CategoriesFilterCollapse"
-                                >
+                                <button className="dropdown-item" data-bs-toggle="collapse" data-bs-target="#CategoriesFilterCollapse">
                                     Categories
                                 </button>
                             </li>
                             <li>
-                                <button
-                                    className="dropdown-item"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#SizesFilterCollapse"
-                                    aria-expanded="false"
-                                    aria-controls="SizesFilterCollapse"
-                                >
+                                <button className="dropdown-item" data-bs-toggle="collapse" data-bs-target="#SizesFilterCollapse">
                                     Sizes
                                 </button>
                             </li>
                             <li>
-                                <button
-                                    className="dropdown-item"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#ColorsFilterCollapse"
-                                    aria-expanded="false"
-                                    aria-controls="ColorsFilterCollapse"
-                                >
+                                <button className="dropdown-item" data-bs-toggle="collapse" data-bs-target="#ColorsFilterCollapse">
                                     Colors
                                 </button>
                             </li>
                         </ul>
                     </div>
-
                 </div>
 
-                <div className="collapse mobile-collapse w-100" id="CategoriesFilterCollapse">
-                    <div className="card card-body">
-                        {baseline.apparels_category && baseline.apparels_category.length > 0 ? (
-                            baseline.apparels_category.map((cat, i) => {
-                                const val = cat.toLowerCase();
-                                return (
-                                    <label key={i}>
-                                        <input
-                                            type="checkbox"
-                                            value={val}
-                                            checked={filterType.category.includes(val)}
-                                            onChange={() => handleFilterChange('category', val)}
-                                        /> {cat}
-                                    </label>
-                                );
-                            })
-                        ) : (
-                            <p>No categories available</p>
-                        )}
+                {/* Mobile Filter Collapses */}
+                {['Categories', 'Sizes', 'Colors'].map((section, idx) => {
+                    const key = section === 'Categories' ? 'category'
+                        : section === 'Sizes' ? 'sizes'
+                            : section === 'Colors' ? 'colors'
+                                : section.toLowerCase(); // fallback
 
-                    </div>
-                </div>
+                    const data = baseline[`apparels_${key}`];
+                    const collapseId = `${section}FilterCollapse`;
 
-                <div className="collapse mobile-collapse w-100" id="SizesFilterCollapse">
-                    <div className="card card-body">
-                        {baseline.apparels_sizes && baseline.apparels_sizes.length > 0 ? (
-                            baseline.apparels_sizes.map((size, i) => {
-                                const val = size.toLowerCase();
-                                return (
-                                    <label key={i}>
-                                        <input
-                                            type="checkbox"
-                                            value={val}
-                                            checked={filterType.size.includes(val)}
-                                            onChange={() => handleFilterChange('size', val)}
-                                        /> {size.toUpperCase()}
-                                    </label>
-                                );
-                            })
-                        ) : (
-                            <p>No sizes available</p>
-                        )}
-
-                    </div>
-                </div>
-
-                <div className="collapse mobile-collapse w-100" id="ColorsFilterCollapse">
-                    <div className="card card-body">
-                        {baseline.apparels_colors && baseline.apparels_colors.length > 0 ? (
-                            baseline.apparels_colors.map((color, i) => {
-                                const val = color.toLowerCase();
-                                return (
-                                    <label key={i}>
-                                        <input
-                                            type="checkbox"
-                                            value={val}
-                                            checked={filterType.color.includes(val)}
-                                            onChange={() => handleFilterChange('color', val)}
-                                        /> {color}
-                                    </label>
-                                );
-                            })
-                        ) : (
-                            <p>No colors available</p>
-                        )}
-
-                    </div>
-                </div>
+                    return (
+                        <div key={idx} className="collapse mobile-collapse w-100 mb-3" id={collapseId}>
+                            <div className="card card-body shadow-sm">
+                                <h6 className="fw-semibold mb-2">{section}</h6>
+                                {data && data.length > 0 ? (
+                                    data.map((item, i) => {
+                                        const val = item.toLowerCase();
+                                        return (
+                                            <div className="form-check" key={i}>
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    id={`${key}-${val}`}
+                                                    value={val}
+                                                    checked={(filterType[key] || []).includes(val)}
+                                                    onChange={() => handleFilterChange(key, val)}
+                                                />
+                                                <label className="form-check-label" htmlFor={`${key}-${val}`}>
+                                                    {key === 'size' ? val.toUpperCase() : item}
+                                                </label>
+                                            </div>
+                                        );
+                                    })
+                                ) : (
+                                    <p className="text-muted">No {key} available</p>
+                                )}
+                            </div>
+                        </div>
+                    );
+                })}
 
                 <div className='items'>
                     {loading ? (
-                            <div className="d-flex flex-column align-items-center my-4">
-                                <div className="spinner-border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div>
-                                <div className="mt-2">Loading items...</div>
+                        <div className="d-flex flex-column align-items-center my-4">
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
                             </div>
-                        ) : filteredItems.length === 0 ? (
-                            <div className="text-center my-4 text-muted">
-                                No items found for the selected filters.
-                            </div>
-                        ) : (
-                            filteredItems.map((item, index) => (
-                                <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                    <Link
-                                        to="/Product"
-                                        state={{ item }}
-                                        className='item text-decoration-none text-dark'
-                                    >
-                                        <img src={item.mainImage} alt={item.name} />
-                                        <div className='item-info'>
-                                            <div className='item-name'>{item.name}</div>
-                                            <div className='item-specifics'>{item.color} - {item.size}</div>
-                                            <div className='item-price'>${item.price}</div>
-                                        </div>
-                                    </Link>
+                            <div className="mt-2">Loading items...</div>
+                        </div>
+                    ) : filteredItems.length === 0 ? (
+                        <div className="text-center my-4 text-muted">
+                            No items found for the selected filters.
+                        </div>
+                    ) : (
+                        filteredItems.map((item, index) => (
+                            <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <Link
+                                    to="/Product"
+                                    state={{ item }}
+                                    className='item text-decoration-none text-dark'
+                                >
+                                    <img src={item.mainImage} alt={item.name} />
+                                    <div className='item-info'>
+                                        <div className='item-name'>{item.name}</div>
+                                        <div className='item-specifics'>{item.color} - {item.size}</div>
+                                        <div className='item-price'>${item.price}</div>
+                                    </div>
+                                </Link>
 
-                                    {isAdmin && (
-                                        <div>
-                                            <button
-                                                className='btn btn-sm btn-outline-info me-2'
-                                                data-bs-toggle='modal'
-                                                data-bs-target='#EditItemModal'
-                                                onClick={() =>
-                                                    setEditItem({
-                                                        ...item,
-                                                        otherImages: Array.isArray(item.otherImages)
-                                                            ? item.otherImages
-                                                            : [''],
-                                                    })
+                                {isAdmin && (
+                                    <div>
+                                        <button
+                                            className='btn btn-sm btn-outline-info me-2'
+                                            data-bs-toggle='modal'
+                                            data-bs-target='#EditItemModal'
+                                            onClick={() =>
+                                                setEditItem({
+                                                    ...item,
+                                                    otherImages: Array.isArray(item.otherImages)
+                                                        ? item.otherImages
+                                                        : [''],
+                                                })
+                                            }
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            className='btn btn-sm btn-outline-danger'
+                                            onClick={() => {
+                                                if (window.confirm('Are you sure you want to delete this item?')) {
+                                                    axios
+                                                        .delete(`https://mallikas-store-server.vercel.app/items/${item._id}`)
+                                                        .then(() => {
+                                                            alert('Deleted successfully');
+                                                            fetchItems();
+                                                        });
                                                 }
-                                            >
-                                                Edit
-                                            </button>
-
-                                            <button
-                                                className='btn btn-sm btn-outline-danger'
-                                                onClick={() => {
-                                                    if (window.confirm('Are you sure you want to delete this item?')) {
-                                                        axios
-                                                            .delete(`https://mallikas-store-server.vercel.app/items/${item._id}`)
-                                                            .then(() => {
-                                                                alert('Deleted successfully');
-                                                                fetchItems();
-                                                            });
-                                                    }
-                                                }}
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            ))
-                        )}
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    )}
                 </div>
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -43,13 +43,56 @@ export default function Product() {
         });
     };
 
-
     const location = useLocation();
     const { item } = location.state || {};
 
     const [selectedImage, setSelectedImage] = useState(item?.mainImage || '');
+    useEffect(() => {
+        if (item?.mainImage) {
+            setSelectedImage(item.mainImage);
+        }
+    }, [item]);
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [item]);
+
+
     const [isFading, setIsFading] = useState(false);
     const [quantity, setQuantity] = useState(1);
+
+    const [relatedProducts, setRelatedProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchRelated = async () => {
+            try {
+                const response = await axios.get(`https://mallikas-store-server.vercel.app/items`);
+                const allItems = response.data;
+
+                // Try finding related items (same sub_category)
+                let related = allItems
+                    .filter(prod => prod.sub_category === item.sub_category && prod._id !== item._id)
+                    .slice(0, 4);
+
+                // If no related items, just pick latest 4 excluding current item
+                if (related.length === 0) {
+                    related = allItems
+                        .filter(prod => prod._id !== item._id)
+                        .slice(-4)  // latest 4 (assuming response is in order from oldest to newest)
+                        .reverse(); // so newest comes first
+                }
+
+                setRelatedProducts(related);
+            } catch (err) {
+                console.error("Failed to fetch products", err);
+            }
+        };
+
+        if (item?.sub_category) {
+            fetchRelated();
+        }
+    }, [item]);
+
+
 
     if (!item) {
         return (
@@ -60,6 +103,8 @@ export default function Product() {
     }
 
     const allImages = [item.mainImage, ...(item.otherImages || [])];
+
+
 
     const onImageClick = (newSrc) => {
         if (newSrc === selectedImage) return;
@@ -113,6 +158,7 @@ export default function Product() {
         }
     };
 
+
     // Placeholder stock status (can be dynamic)
     const inStock = item.stock !== undefined ? item.stock > 0 : true;
 
@@ -123,153 +169,178 @@ export default function Product() {
     // Social share URLs (example using current page url)
     const shareUrl = window.location.href;
 
+
     return (
         <div className="mt-3 product-detail">
 
-            {/* Images */}
-            <div className="images">
-                <div className="mb-4 text-center">
-                    <img
-                        src={selectedImage}
-                        alt={item.name}
-                        className={`selectedImage ${isFading ? 'fade-out' : 'fade-in'}`}
-                    />
-                </div>
-                <div className="otherImages">
-                    {allImages.map((img, i) => (
+            <div className='product'>
+                {/* Images */}
+                <div className="images">
+                    <div className="mb-4 text-center">
                         <img
-                            key={i}
-                            src={img}
-                            alt={`Preview ${i}`}
-                            className={`img-thumbnail ${selectedImage === img ? 'border-primary' : ''}`}
-                            style={{ width: '80px', height: '80px', objectFit: 'cover', cursor: 'pointer' }}
-                            onClick={() => onImageClick(img)}
+                            src={selectedImage}
+                            alt={item.name}
+                            className={`selectedImage ${isFading ? 'fade-out' : 'fade-in'}`}
                         />
-                    ))}
-                </div>
-            </div>
-
-            {/* Product details */}
-            <div className="col-md-6">
-                <div className="card shadow-sm mb-4">
-                    <div className="card-body">
-                        <h2 className="card-title mb-3">{item.name}</h2>
-
-                        <ul className="list-group list-group-flush mb-3">
-                            <li className="list-group-item px-0">
-                                <strong>Category:</strong> {item.sub_category}
-                            </li>
-                            <li className="list-group-item px-0">
-                                <strong>Color:</strong> {item.color}
-                            </li>
-                            <li className="list-group-item px-0">
-                                <strong>Size:</strong> {item.size}
-                            </li>
-                            <li className="list-group-item px-0">
-                                <strong>Price:</strong> <span className="text-success">${item.price.toFixed(2)}</span>
-                            </li>
-                            <li className="list-group-item px-0">
-                                <strong>Availability:</strong>{' '}
-                                {inStock ? (
-                                    <span className="text-success">In Stock</span>
-                                ) : (
-                                    <span className="text-danger">Out of Stock</span>
-                                )}
-                            </li>
-                        </ul>
-
-                        {/* Ratings */}
-                        <div className="mb-3">
-                            <strong>Rating:</strong>{' '}
-                            <span className="text-warning">
-                                {'★'.repeat(Math.floor(rating))}
-                                {rating % 1 >= 0.5 ? '½' : ''}
-                                {'☆'.repeat(5 - Math.ceil(rating))}
-                            </span>{' '}
-                            ({reviewCount} reviews)
-                        </div>
-
-                        <h5>Description</h5>
-                        <p className="text-muted">{item.description || 'No description available.'}</p>
-
-                        {/* Size Guide Link
-                            <p>
-                                <a href="/size-guide" target="_blank" rel="noopener noreferrer">
-                                    View Size Guide
-                                </a>
-                            </p> */}
-
-                        {/* Quantity and Add to Cart */}
-                        <div className="d-flex align-items-center mb-3 gap-3">
-                            <label htmlFor="quantity" className="fw-semibold mb-0">
-                                Quantity:
-                            </label>
-                            <input
-                                id="quantity"
-                                type="number"
-                                min="1"
-                                value={quantity}
-                                onChange={handleQuantityChange}
-                                className="form-control w-25"
-                                disabled={!inStock}
+                    </div>
+                    <div className="otherImages">
+                        {allImages.map((img, i) => (
+                            <img
+                                key={i}
+                                src={img}
+                                alt={`Preview ${i}`}
+                                className={`img-thumbnail ${selectedImage === img ? 'border-primary' : ''}`}
+                                style={{ width: '80px', height: '80px', objectFit: 'cover', cursor: 'pointer' }}
+                                onClick={() => onImageClick(img)}
                             />
-                        </div>
+                        ))}
+                    </div>
+                </div>
 
-                        <div className="mt-4 d-flex align-items-center gap-3 mb-4">
-                            <span className="fw-semibold">Share:</span>
+                {/* Product details */}
+                <div className="col-md-6">
+                    <div className="p-2 mb-4">
+                        <div className="product-info">
 
-                            <button
-                                className="btn btn-outline-secondary btn-sm"
-                                onClick={handleCopyLink}
-                                aria-label="Copy product link"
-                            >
-                                <i className="fa-solid fa-link fa-lg me-2"></i>Copy Link
-                            </button>
+                            {/* Name */}
+                            <h2 className="fw-bold mb-3">{item.name}</h2>
 
-                            {/* Copy confirmation message */}
-                            <div
-                                className={` ms-2 px-2 py-1 rounded bg-success text-white small ${copySuccess ? 'opacity-100' : 'opacity-0'
-                                    }`}
-                                style={{
-                                    transition: 'opacity 0.5s ease',
-                                    pointerEvents: 'none',
-                                    whiteSpace: 'nowrap',
-                                }}
-                            >
-                                Link copied!
+                            {/* Price */}
+                            <div className="mb-3 fs-5 text-success fw-semibold">
+                                ${item.price.toFixed(2)}
+                            </div>
+
+                            {/* Quantity */}
+                            <div className="d-flex align-items-center mb-3">
+                                <label htmlFor="quantity" className="form-label me-3 mb-0 fw-medium">Quantity:</label>
+                                <input
+                                    id="quantity"
+                                    type="number"
+                                    min="1"
+                                    value={quantity}
+                                    onChange={handleQuantityChange}
+                                    className="form-control w-auto"
+                                    style={{ maxWidth: '100px' }}
+                                    disabled={!inStock}
+                                />
+                            </div>
+
+                            {/* Share & Add to Cart */}
+                            <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+                                <button
+                                    className="btn btn-outline-secondary btn-sm"
+                                    onClick={handleCopyLink}
+                                    aria-label="Copy product link"
+                                >
+                                    <i className="fa-solid fa-link me-2"></i>Copy Link
+                                </button>
+
+                                {!isLoggedIn && (
+                                    <button
+                                        className="btn btn-info btn-sm"
+                                        onClick={() => alert('Please log in first.')}
+                                    >
+                                        <i className="fa-solid fa-cart-plus me-2"></i>Add to Cart
+                                    </button>
+                                )}
+
+                                {isLoggedIn && !isAdmin && (
+                                    <>
+                                        <button
+                                            className="btn btn-info btn-sm"
+                                            onClick={addToCart}
+                                            disabled={!item.available}
+                                        >
+                                            <i className="fa-solid fa-cart-plus me-2"></i>Add to Cart
+                                        </button>
+
+                                        {!item.available && (
+                                            <div className="text-white bg-secondary rounded px-3 py-1 small">
+                                                Out of Stock
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+
+                                <div
+                                    className={`px-2 py-1 rounded bg-success text-white small ${copySuccess ? 'opacity-100' : 'opacity-0'}`}
+                                    style={{
+                                        transition: 'opacity 0.5s ease',
+                                        pointerEvents: 'none',
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    Link copied!
+                                </div>
+                            </div>
+
+                            {/* Description */}
+                            <div className="mb-4">
+                                <h5 className="fw-semibold">Description</h5>
+                                <p className="text-muted mb-0">{item.description || 'No description available.'}</p>
+                            </div>
+
+                            {/* Additional Info */}
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item px-0"><strong>Category:</strong> {item.sub_category}</li>
+                                <li className="list-group-item px-0"><strong>Color:</strong> {item.color}</li>
+                                <li className="list-group-item px-0"><strong>Size:</strong> {item.size}</li>
+                                <li className="list-group-item px-0">
+                                    <strong>Availability:</strong> {inStock ? (
+                                        <span className="text-success">In Stock</span>
+                                    ) : (
+                                        <span className="text-danger">Out of Stock</span>
+                                    )}
+                                </li>
+                            </ul>
+
+                            {/* Rating */}
+                            <div className="mt-3">
+                                <strong>Rating:</strong>{' '}
+                                <span className="text-warning">
+                                    {'★'.repeat(Math.floor(rating))}
+                                    {rating % 1 >= 0.5 ? '½' : ''}
+                                    {'☆'.repeat(5 - Math.ceil(rating))}
+                                </span>{' '}
+                                ({reviewCount} reviews)
                             </div>
                         </div>
 
-                        {!isLoggedIn && (
-                            <button
-                                className="btn btn-info btn-sm w-100"
-                                onClick={() => alert('Please log in first.')}
-                            >
-                                <i className="fa-solid fa-cart-plus fa-lg me-3"></i>Add to Cart
-                            </button>
-                        )}
-
-                        {isLoggedIn && !isAdmin && (
-                            <>
-                                <button
-                                    className="btn btn-info btn-sm w-100"
-                                    onClick={addToCart}
-                                    disabled={!item.available}
-                                >
-                                    <i className="fa-solid fa-cart-plus fa-lg me-3"></i>Add to Cart
-                                </button>
-
-                                {!item.available && (
-                                    <div className="text-light text-center mt-1 p-2 bg-secondary rounded" style={{ fontSize: '0.85rem' }}>
-                                        Out of Stock
-                                    </div>
-                                )}
-                            </>
-                        )}
-
                     </div>
                 </div>
+
             </div>
+
+            {/* Related Products */}
+            {relatedProducts.length > 0 && (
+                <div className="mt-5 container">
+                    <h4 className="mb-4" style={{fontFamily:'impact', fontSize:'2rem'}}>You May Also Like...</h4>
+                    <div className="items">
+                        {relatedProducts.map((prod) => (
+                            <div key={prod._id} className="item">
+
+                                <img
+                                    src={prod.mainImage}
+                                    alt={prod.name}
+                                />
+                                <div className="item-info bg-light">
+                                    <div className="text-dark">{prod.name}</div>
+                                    <div className="item-price text-success">${prod.price}</div>
+                                    <Link
+                                        to="/Product"
+                                        state={{ item: prod }}
+                                        className="btn btn-outline-dark"
+                                    >
+                                        View
+                                    </Link>
+                                </div>
+                            </div>
+
+                        ))}
+                    </div>
+                </div>
+            )}
+
 
             {/* Related Products */}
             {/* <div className="mt-5">

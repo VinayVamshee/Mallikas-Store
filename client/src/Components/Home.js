@@ -19,6 +19,47 @@ export default function Home() {
         fetchItems();
     }, []);
 
+     const HoverItem = ({ item }) => {
+        const [imageIndex, setImageIndex] = useState(0);
+        const [hovering, setHovering] = useState(false);
+
+        useEffect(() => {
+            let interval;
+            if (hovering && item.otherImages?.length > 0) {
+                interval = setInterval(() => {
+                    setImageIndex((prev) => (prev + 1) % item.otherImages.length);
+                }, 1000);
+            } else {
+                setImageIndex(0);
+            }
+
+            return () => clearInterval(interval);
+        }, [hovering, item.otherImages]);
+
+        const currentImage =
+            hovering && item.otherImages?.length > 0
+                ? item.otherImages[imageIndex]
+                : item.mainImage;
+
+        return (
+            <Link
+                to="/Product"
+                state={{ item }}
+                className="item text-decoration-none text-dark"
+                onMouseEnter={() => setHovering(true)}
+                onMouseLeave={() => setHovering(false)}
+            >
+                <img src={currentImage} alt={item.name} />
+                <div className="item-info">
+                    <div className="item-name">{item.name}</div>
+                    <div className="item-specifics">{item.color} - {item.size}</div>
+                    <div className="item-price">${item.price}</div>
+                </div>
+            </Link>
+        );
+    };
+
+
     return (
         <div className='home'>
 
@@ -36,7 +77,7 @@ export default function Home() {
                 </div>
                 <div className="carousel-inner">
                     <div className="carousel-item active">
-                        <img src="https://i.pinimg.com/736x/41/1b/f9/411bf92ab7db3f5e560ff6899affecf7.jpg" className="d-block" alt="..." />
+                        <img src="https://w0.peakpx.com/wallpaper/748/25/HD-wallpaper-indian-women-in-saree-culture-in-tradition-women-saree-indian.jpg" className="d-block" alt="..." />
                         <div className="carousel-caption d-none d-md-block d-flex flex-column justify-content-center align-items-center bottom-50">
                             <h1>New Arrivals !</h1>
                             <p>Discover the latest sarees, elegant ensembles, and stunning jewelry to elevate your wardrobe.</p>
@@ -44,7 +85,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="https://img.businessoffashion.com/resizer/v2/PYW4AD3SPZFEPGCFIW3XW5HO5M.jpg?auth=d8701bdc2f1a1dc19aa45e96e51d5b7d3a1b21ee6e43f916bef4670d0b712462&width=1440" className="d-block" alt="..." />
+                        <img src="https://images.bazarindiano.com.br/uploads/2022/12/shutterstock_132714794-1-scaled.jpg" className="d-block" alt="..." />
                         <div className="carousel-caption d-none d-md-block d-flex flex-column justify-content-center align-items-center  top-40 bottom-50">
                             <h1>Apparels</h1>
                             <p>Step into style with our latest collection of sarees, kurtis, and trendy outfits designed for every occasion.</p>
@@ -81,19 +122,7 @@ export default function Home() {
                         </div>
                     ) : (
                         items.slice(-20).map((item, index) => (
-                            <Link
-                                to="/Product"
-                                state={{ item }}
-                                key={index}
-                                className="item text-decoration-none text-dark"
-                            >
-                                <img src={item.mainImage} alt={item.name} />
-                                <div className="item-info">
-                                    <div className="item-name">{item.name}</div>
-                                    <div className="item-specifics">{item.color} - {item.size}</div>
-                                    <div className="item-price">${item.price}</div>
-                                </div>
-                            </Link>
+                             <HoverItem key={index} item={item} />
                         ))
                     )}
 
