@@ -41,6 +41,47 @@ export default function Apparels() {
         }
     };
 
+    const HoverItem = ({ item }) => {
+        const [imageIndex, setImageIndex] = useState(0);
+        const [hovering, setHovering] = useState(false);
+
+        useEffect(() => {
+            let interval;
+            if (hovering && item.otherImages?.length > 0) {
+                interval = setInterval(() => {
+                    setImageIndex((prev) => (prev + 1) % item.otherImages.length);
+                }, 1000);
+            } else {
+                setImageIndex(0);
+            }
+
+            return () => clearInterval(interval);
+        }, [hovering, item.otherImages]);
+
+        const currentImage =
+            hovering && item.otherImages?.length > 0
+                ? item.otherImages[imageIndex]
+                : item.mainImage;
+
+        return (
+            <Link
+                to="/Product"
+                state={{ item }}
+                className="item text-decoration-none text-dark"
+                onMouseEnter={() => setHovering(true)}
+                onMouseLeave={() => setHovering(false)}
+            >
+                <img src={currentImage} alt={item.name} />
+                <div className="item-info">
+                    <div className="item-name">{item.name}</div>
+                    <div className="item-specifics">{item.color} - {item.size}</div>
+                    <div className="item-price">${item.price}</div>
+                </div>
+            </Link>
+        );
+    };
+
+
     useEffect(() => {
         fetchItems();
     }, []);
@@ -372,18 +413,7 @@ export default function Apparels() {
                     ) : (
                         filteredItems.map((item, index) => (
                             <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                <Link
-                                    to="/Product"
-                                    state={{ item }}
-                                    className='item text-decoration-none text-dark'
-                                >
-                                    <img src={item.mainImage} alt={item.name} />
-                                    <div className='item-info'>
-                                        <div className='item-name'>{item.name}</div>
-                                        <div className='item-specifics'>{item.color} - {item.size}</div>
-                                        <div className='item-price'>${item.price}</div>
-                                    </div>
-                                </Link>
+                                <HoverItem key={index} item={item} />
 
                                 {isAdmin && (
                                     <div>

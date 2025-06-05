@@ -19,7 +19,7 @@ export default function Home() {
         fetchItems();
     }, []);
 
-     const HoverItem = ({ item }) => {
+    const HoverItem = ({ item }) => {
         const [imageIndex, setImageIndex] = useState(0);
         const [hovering, setHovering] = useState(false);
 
@@ -121,8 +121,8 @@ export default function Home() {
                             <div>Loading...</div>
                         </div>
                     ) : (
-                        items.slice(-20).map((item, index) => (
-                             <HoverItem key={index} item={item} />
+                        items.slice(0, 20).map((item, index) => (
+                            <HoverItem key={index} item={item} />
                         ))
                     )}
 
