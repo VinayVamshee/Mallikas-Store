@@ -161,12 +161,99 @@ export default function Navigation() {
         }
     };
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [showResults, setShowResults] = useState(false);
+    const handleSearch = async () => {
+         if (!searchQuery.trim()) {
+        setShowResults(false);
+        setSearchResults([]);
+        return;
+    }
+        try {
+            const res = await axios.get(`https://mallikas-store-server.vercel.app/items`);
+            const allItems = res.data;
+
+            const filtered = allItems.filter(item =>
+                (item.name?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+                (item.color?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+                (item.size?.toLowerCase() || '').includes(searchQuery.toLowerCase())
+            );
+
+            setSearchResults(filtered);
+            setShowResults(true);
+        } catch (error) {
+            console.error('Search failed:', error);
+        }
+    };
+    useEffect(() => {
+        if (searchQuery.trim() === '') {
+            setShowResults(false);
+            setSearchResults([]);
+        }
+    }, [searchQuery]);
+
+    const HoverItem = ({ item }) => {
+        const [imageIndex, setImageIndex] = useState(0);
+        const [hovering, setHovering] = useState(false);
+
+        useEffect(() => {
+            let interval;
+            if (hovering && item.otherImages?.length > 0) {
+                interval = setInterval(() => {
+                    setImageIndex((prev) => (prev + 1) % item.otherImages.length);
+                }, 1000);
+            } else {
+                setImageIndex(0);
+            }
+
+            return () => clearInterval(interval);
+        }, [hovering, item.otherImages]);
+
+        const currentImage =
+            hovering && item.otherImages?.length > 0
+                ? item.otherImages[imageIndex]
+                : item.mainImage;
+
+        return (
+            <Link
+                to="/Product"
+                state={{ item }}
+                className="item text-decoration-none text-dark"
+                onMouseEnter={() => setHovering(true)}
+                onMouseLeave={() => setHovering(false)}
+                style={{marginTop:'50px'}}
+            >
+                <img src={currentImage} alt={item.name} />
+                <div className="item-info">
+                    <div className="item-name">{item.name}</div>
+                    <div className="item-specifics">{item.color} - {item.size}</div>
+                    <div className="item-price">${item.price}</div>
+                </div>
+            </Link>
+        );
+    };
+
     return (
         <div>
             {/* Navigation */}
             <div className='navigation'>
                 <Link to="/" className='logo'><img src={logo} alt='...' /><strong>Maguva's Collection</strong></Link>
-                <form><input type='text' placeholder='Search' /><button className='btn search-btn'><i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search</button></form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSearch();
+                }}>
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button className="btn search-btn">
+                        <i className="fa-solid fa-magnifying-glass fa-lg me-2"></i>Search
+                    </button>
+                </form>
+
                 <div className='profile'>
                     {isLoggedIn ? (
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '5px', width: '100%' }}>
@@ -459,12 +546,25 @@ export default function Navigation() {
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
+
+            {showResults && (
+                <div className="search-collapse bg-light p-3 my-3 rounded shadow">
+                    <h5>Search Results for "{searchQuery}"</h5>
+                    {searchResults.length > 0 ? (
+                        <div className="d-flex flex-wrap gap-3">
+                            {searchResults.map((item, index) => (
+                                <HoverItem key={index} item={item} />
+                            ))}
+                        </div>
+                    ) : (
+                        <p style={{marginTop:'78px'}}>No items found.</p>
+                    )}
+                </div>
+            )}
+
             {/* Baseline Info Collapse */}
-            <div className="collapse" id="BaselineCollapse" style={{marginTop:'78px'}}>
+            <div className="collapse" id="BaselineCollapse" style={{ marginTop: '78px' }}>
                 <div className="card card-body">
                     {['apparels', 'accessories'].map(type => (
                         <div key={type} className="form p-3 border rounded mb-3" style={{ backgroundColor: 'whitesmoke' }}>
