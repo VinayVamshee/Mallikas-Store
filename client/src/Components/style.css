@@ -40,10 +40,12 @@ body,
     flex: 1;
     display: flex;
     gap: 5px;
+    min-width: 10px;
 }
+
 .navigation form .btn {
-     color: white;
-     border: white 1px solid ;
+    color: white;
+    border: white 1px solid;
 }
 
 .navigation form input {
@@ -51,6 +53,7 @@ body,
     border-radius: 10px;
     border: 0.5px solid grey;
     padding-left: 10px;
+    min-width: 10px;
 }
 
 .navigation .logo {
@@ -58,7 +61,7 @@ body,
     justify-content: center;
     align-items: center;
     text-decoration: none;
-     color: white;
+    color: white;
 }
 
 .navigation .logo strong {
@@ -240,7 +243,7 @@ Link {
 }
 
 .apparels {
-      margin-top: 78px;
+    margin-top: 78px;
     display: flex;
     min-height: 100vh;
 }
@@ -268,20 +271,20 @@ Link {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  background-color: white;
-  width: 100%;
-  color: black;
-  padding: 10px 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    background-color: white;
+    width: 100%;
+    color: black;
+    padding: 10px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .filters .filter-reset .btn {
-  background-color: #f8d7da;
-  color: #721c24;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 4px;
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 4px;
 }
 
 .filters .collapse .card-body {
@@ -355,7 +358,7 @@ Link {
 }
 
 .product-detail {
-      margin-top: 78px;
+    margin-top: 78px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -400,6 +403,7 @@ Link {
     justify-content: center;
     overflow: scroll;
     width: 100%;
+    padding: 5px;
 }
 
 @keyframes fadeIn {
@@ -598,9 +602,10 @@ Link {
 @media (max-width: 720px) {
 
     .items {
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          padding: 0px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        padding: 0px;
     }
+
     .new-arrivals {
         padding: 10px;
     }
@@ -643,7 +648,7 @@ Link {
 
 @media (max-width: 600px) {
 
-     .filters {
+    .filters {
         display: none;
     }
 
@@ -651,7 +656,7 @@ Link {
         display: block;
         margin-left: 5px;
     }
-    
+
     .filters .collapse .card-body {
         white-space: nowrap;
     }

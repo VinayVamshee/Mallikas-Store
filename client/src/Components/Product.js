@@ -171,8 +171,8 @@ export default function Product() {
 
 
     return (
-        <div className="mt-3 product-detail">
-
+        <div className="product-detail">
+            {/* <h2 className='fw-bold'>{item.name}</h2> */}
             <div className='product'>
                 {/* Images */}
                 <div className="images">
@@ -314,7 +314,7 @@ export default function Product() {
             {/* Related Products */}
             {relatedProducts.length > 0 && (
                 <div className="mt-5 container">
-                    <h4 className="mb-4" style={{fontFamily:'impact', fontSize:'2rem'}}>You May Also Like...</h4>
+                    <h4 className="mb-4" style={{ fontFamily: 'impact', fontSize: '2rem' }}>You May Also Like...</h4>
                     <div className="items">
                         {relatedProducts.map((prod) => (
                             <div key={prod._id} className="item">

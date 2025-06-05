@@ -178,13 +178,38 @@ export default function Navigation() {
 
                             {/* Admin-only buttons */}
                             {isAdmin && (
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '5px', flexGrow: 1 }}>
-                                    <button className='btn btn-sm btn-warning me-2' data-bs-toggle='modal' data-bs-target='#AddItemModal'>Add Item</button>
-                                    <button className="btn btn-sm btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#BaselineCollapse" aria-expanded="false" aria-controls="BaselineCollapse">
-                                        Edit Basics
+                                <div className="dropdown">
+                                    <button
+                                        className="btn btn-sm btn-warning dropdown-toggle"
+                                        type="button"
+                                        id="adminDropdown"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        Actions
                                     </button>
+                                    <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <li>
+                                            <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#AddItemModal">
+                                                Add Item
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#BaselineCollapse"
+                                                aria-expanded="false"
+                                                aria-controls="BaselineCollapse"
+                                            >
+                                                Edit Basics
+                                            </button>
+                                        </li>
+                                    </ul>
                                 </div>
                             )}
+
 
                             {/* Logout */}
                             <button className='btn btn-sm btn-secondary'
@@ -439,11 +464,11 @@ export default function Navigation() {
 
             </div>
             {/* Baseline Info Collapse */}
-            <div className="collapse" id="BaselineCollapse">
+            <div className="collapse" id="BaselineCollapse" style={{marginTop:'78px'}}>
                 <div className="card card-body">
                     {['apparels', 'accessories'].map(type => (
                         <div key={type} className="form p-3 border rounded mb-3" style={{ backgroundColor: 'whitesmoke' }}>
-                            <h6 className="mt-3 text-capitalize">{type}</h6>
+                            <h3 className="mt-3 text-capitalize text-danger">{type}</h3>
                             {['category', 'colors', 'sizes'].map(field => {
                                 const key = `${type}_${field}`;
                                 return (
@@ -474,7 +499,7 @@ export default function Navigation() {
                                         </div>
                                         <div className="row mb-2">
                                             {(baseline[key] || []).map((item, idx) => (
-                                                <div key={idx} className="col-6 d-flex align-items-stretch mb-1 me-2" style={{ width: '48.5%' }}>
+                                                <div key={idx} className=" w-100 col-6 d-flex align-items-stretch mb-1 me-2" style={{ width: '48.5%' }}>
                                                     <div
                                                         className="p-2 border"
                                                         style={{ flexGrow: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0, display: 'flex', alignItems: 'center' }}
