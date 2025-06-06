@@ -198,7 +198,7 @@ export default function Accessories() {
             <div className='filters'>
 
                 <div className='filter-reset mb-3'>
-                    <i className="fa-solid fa-filter fa-lg"></i> Filter ||
+                    <i className="fa-solid fa-filter fa-lg"></i> Filter
                     <button className='btn' onClick={() => setFilterType({ category: [], size: [], color: [] })}>
                         Reset
                     </button>

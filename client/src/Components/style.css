@@ -18,6 +18,19 @@ body,
     background-color: rgba(0, 0, 0, 0.596);
 }
 
+/* List group items */
+.filters .list-group-item {
+  background-color: #2e1a28;  /* deep plum */
+  color: #f4c3d2;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
 .navigation {
     display: flex;
     gap: 10px;
@@ -178,12 +191,13 @@ Link {
 .item:hover {
     cursor: pointer;
     transform: scale(1.04);
-    border: 1px solid white;
+    border: 1.4px solid black;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.549);
 }
 
+
 .item:hover img {
-    filter: brightness(1.1);
+    filter: brightness(1.2);
 }
 
 .item img {
@@ -260,7 +274,7 @@ Link {
     gap: 3px;
 
     position: sticky;
-    top: 0;
+    top: 78px;
     max-height: 100vh;
     overflow-y: auto;
     z-index: 10;
@@ -307,7 +321,7 @@ Link {
     padding-left: 0px;
 
     position: sticky;
-    top: 0;
+    top: 78px;
     max-height: 100vh;
     z-index: 1;
 }

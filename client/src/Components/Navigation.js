@@ -258,7 +258,7 @@ export default function Navigation() {
                     {isLoggedIn ? (
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '5px', width: '100%' }}>
                             {/* Redirect Button */}
-                            <button className={`btn profile-btn btn-sm ${isAdmin ? 'btn-danger' : 'btn-info'} me-2`}
+                            <button className={`btn profile-btn ${isAdmin ? 'btn-danger' : 'btn-info'} me-2`}
                                 onClick={() => navigate(isAdmin ? '/Admin' : '/User')} >
                                 <i className='fa-solid fa-user fa-lg'></i><div>Profile</div>
                             </button>
@@ -299,7 +299,7 @@ export default function Navigation() {
 
 
                             {/* Logout */}
-                            <button className='btn btn-sm btn-secondary'
+                            <button className='btn btn-secondary'
                                 onClick={() => {
                                     localStorage.removeItem('token');
                                     window.location.reload();
@@ -309,7 +309,7 @@ export default function Navigation() {
                             </button>
                         </div>
                     ) : (
-                        <button className='btn btn-sm btn-primary' data-bs-target='#LoginRegisterModal' data-bs-toggle='modal'>
+                        <button className='btn btn-primary' data-bs-target='#LoginRegisterModal' data-bs-toggle='modal'>
                             <i className='fa-solid fa-right-to-bracket fa-lg me-2'></i>Login
                         </button>
                     )}
