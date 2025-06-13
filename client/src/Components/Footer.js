@@ -29,13 +29,13 @@ export default function Footer() {
                             <div className="d-flex align-items-center">
                                 <i className="fa-brands fa-whatsapp fa-lg me-2" style={{ color: 'limegreen' }}></i>
                                 <a
-                                    href="https://wa.me/919876543210"
+                                    href="https://wa.me/+18042692302"
                                     className="text-white"
                                     target="_blank"
                                     rel="noreferrer"
                                     style={{ textDecoration: 'none' }}
                                 >
-                                    +91 98765 43210
+                                    +1 8042692302
                                 </a>
                             </div>
 
@@ -55,11 +55,11 @@ export default function Footer() {
                             <div className="d-flex align-items-center">
                                 <i className="fa-solid fa-envelope fa-lg me-2" style={{ color: 'white' }}></i>
                                 <a
-                                    href="mailto:contact@mallikastore.com"
+                                    href="mailto:Maguva15.collections@gmail.com"
                                     className="text-white"
                                     style={{ textDecoration: 'none' }}
                                 >
-                                    contact@mallikastore.com
+                                    Maguva15.collections@gmail.com
                                 </a>
                             </div>
                         </div>

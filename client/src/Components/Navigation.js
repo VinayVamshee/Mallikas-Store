@@ -462,7 +462,7 @@ export default function Navigation() {
                                             onChange={e => setItem({ ...item, available: e.target.value === 'true' })}
                                         >
                                             <option value='true'>In Stock</option>
-                                            <option value='false'>Out of Stock</option>
+                                            <option value='false'>Sold Out</option>
                                         </select>
                                     </div>
 

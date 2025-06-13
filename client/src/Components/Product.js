@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-// Mock related products data
-// const relatedProducts = [
-//     { id: 1, name: 'Related Product 1', price: 29.99, image: 'https://via.placeholder.com/150' },
-//     { id: 2, name: 'Related Product 2', price: 19.99, image: 'https://via.placeholder.com/150' },
-//     { id: 3, name: 'Related Product 3', price: 39.99, image: 'https://via.placeholder.com/150' },
-// ];
-
 export default function Product() {
+    const navigate = useNavigate();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const token = localStorage.getItem('token');
+    // State to toggle edit mode
+    const [editMode, setEditMode] = useState(false);
+
+    // State for the shipping form if not already declared
+    const [checkoutForm, setCheckoutForm] = useState({
+        name: '',
+        phone: '',
+        address: ''
+    });
+
+    // Handle form input changes
+    const handleCheckoutChange = (e) => {
+        const { name, value } = e.target;
+        setCheckoutForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if (token) {
             try {
                 const decoded = jwtDecode(token);
@@ -32,7 +43,7 @@ export default function Product() {
             setIsLoggedIn(false);
             setIsAdmin(false);
         }
-    }, []);
+    }, [token]);
 
     const [copySuccess, setCopySuccess] = useState(false);
 
@@ -92,19 +103,28 @@ export default function Product() {
         }
     }, [item]);
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const decoded = JSON.parse(atob(token.split('.')[1]));
+                const res = await axios.get(`https://mallikas-store-server.vercel.app/users/${decoded.id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setCheckoutForm({
+                    name: res.data.username || '',
+                    phone: res.data.phone || '',
+                    address: res.data.address || ''
+                });
 
+            } catch (err) {
+                console.error(err);
+            }
+        };
 
-    if (!item) {
-        return (
-            <div className="container mt-5">
-                <h2>No product data available.</h2>
-            </div>
-        );
-    }
+        if (token) fetchUser();
+    }, [token]);
 
     const allImages = [item.mainImage, ...(item.otherImages || [])];
-
-
 
     const onImageClick = (newSrc) => {
         if (newSrc === selectedImage) return;
@@ -169,6 +189,47 @@ export default function Product() {
     // Social share URLs (example using current page url)
     const shareUrl = window.location.href;
 
+    const handlePlaceOrder = async () => {
+        if (!checkoutForm.name || !checkoutForm.phone || !checkoutForm.address) {
+            return alert("Please complete the shipping info before placing the order.");
+        }
+
+        const token = localStorage.getItem('token');
+        if (!token) return alert("User not logged in.");
+
+        setLoading(true);
+        try {
+            const decoded = jwtDecode(token);
+
+            const orderPayload = {
+                userId: decoded.id || decoded._id,
+                items: [{ itemId: item._id, quantity }],
+                shipping: checkoutForm,
+                totalPrice: item.price * quantity
+            };
+
+            await axios.post('https://mallikas-store-server.vercel.app/orders', orderPayload, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            document.querySelector('#checkoutModal .btn-close')?.click();
+            document.getElementById("triggerSuccessModal")?.click();
+
+        } catch (err) {
+            console.error(err);
+            alert('Failed to place order.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (!item) {
+        return (
+            <div className="container mt-5">
+                <h2>No product data available.</h2>
+            </div>
+        );
+    }
 
     return (
         <div className="product-detail">
@@ -253,14 +314,152 @@ export default function Product() {
                                         >
                                             <i className="fa-solid fa-cart-plus me-2"></i>Add to Cart
                                         </button>
+                                        <button
+                                            className="btn btn-success btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#checkoutModal"
+                                        >
+                                            <i className="fa-solid fa-bag-shopping me-2"></i>Buy Now
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            className="d-none"
+                                            id="triggerSuccessModal"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#orderSuccessModal"
+                                        ></button>
+
 
                                         {!item.available && (
-                                            <div className="text-white bg-secondary rounded px-3 py-1 small">
-                                                Out of Stock
+                                            <div className="text-white bg-danger rounded px-3 py-1 small">
+                                                <i className="fa-solid fa-ban me-2"></i>Sold Out
                                             </div>
                                         )}
                                     </>
                                 )}
+
+                                {/* Order Success Modal */}
+                                <div className="modal fade" id="orderSuccessModal" tabIndex="-1" aria-labelledby="orderSuccessLabel" aria-hidden="true">
+                                    <div className="modal-dialog modal-dialog-centered">
+                                        <div className="modal-content text-center">
+                                            <div className="modal-body p-5">
+                                                <div className="text-success mb-3" style={{ fontSize: '3rem' }}>
+                                                    <i className="fa-solid fa-circle-check fa-xl"></i>
+                                                </div>
+                                                <h5 className="mb-2">Order Placed Successfully!</h5>
+                                                <p className="text-muted">Thank you for shopping with us.</p>
+
+                                                <hr />
+                                                <div className="text-start">
+                                                    <p><strong>Name:</strong> {checkoutForm.name}</p>
+                                                    <p><strong>Phone:</strong> {checkoutForm.phone}</p>
+                                                    <p><strong>Address:</strong> {checkoutForm.address}</p>
+                                                </div>
+
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-success mt-3"
+                                                    onClick={() => {
+                                                        // Optional: Close the modal
+                                                        document.getElementById('orderSuccessModal')?.classList.remove('show');
+                                                        document.querySelector('.modal-backdrop')?.remove();
+                                                        document.body.classList.remove('modal-open');
+                                                        navigate('/');
+                                                    }}
+                                                >
+                                                    Continue Shopping
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Confirm Order Modal for Buy Now */}
+                                <div className="modal fade" id="checkoutModal" tabIndex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+                                    <div className="modal-dialog modal-dialog-centered">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title" id="checkoutModalLabel">Confirm Order</h5>
+                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <h6 className="mb-3">🛍️ Item You're Buying</h6>
+                                                <ul className="list-group mb-4">
+                                                    <li className="list-group-item d-flex align-items-center">
+                                                        <img
+                                                            src={item.mainImage || 'https://via.placeholder.com/50'}
+                                                            alt={item.name}
+                                                            className="me-3 rounded"
+                                                            style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                                        />
+                                                        <div className="flex-grow-1">
+                                                            <div className="fw-semibold">{item.name}</div>
+                                                            <small className="text-muted">Qty: {quantity}</small>
+                                                        </div>
+                                                        <div className="text-end fw-bold text-success">
+                                                            ${item.price * quantity}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                                <h6 className="mb-3">🚚 Shipping Info</h6>
+                                                {editMode ? (
+                                                    <>
+                                                        <input
+                                                            type="text"
+                                                            className="form-control mb-2"
+                                                            placeholder="Name"
+                                                            name="name"
+                                                            value={checkoutForm.name}
+                                                            onChange={handleCheckoutChange}
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            className="form-control mb-2"
+                                                            placeholder="Phone"
+                                                            name="phone"
+                                                            value={checkoutForm.phone}
+                                                            onChange={handleCheckoutChange}
+                                                        />
+                                                        <textarea
+                                                            className="form-control mb-2"
+                                                            placeholder="Address"
+                                                            name="address"
+                                                            value={checkoutForm.address}
+                                                            onChange={handleCheckoutChange}
+                                                        />
+                                                    </>
+                                                ) : (
+                                                    <ul className="list-group list-group-flush mb-2">
+                                                        <li className="list-group-item">
+                                                            <strong>Name:</strong> {checkoutForm.name || 'N/A'}
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <strong>Phone:</strong> {checkoutForm.phone || 'N/A'}
+                                                        </li>
+                                                        <li className="list-group-item">
+                                                            <strong>Address:</strong> {checkoutForm.address || 'N/A'}
+                                                        </li>
+                                                    </ul>
+                                                )}
+                                                <button className="btn btn-info btn-sm" onClick={() => setEditMode(!editMode)}>
+                                                    {editMode ? 'Cancel Edit' : 'Edit Info'}
+                                                </button>
+                                            </div>
+
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" className="btn btn-primary" onClick={handlePlaceOrder} disabled={loading}>
+                                                    {loading ? 'Placing Order...' : 'Place Order'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
 
                                 <div
                                     className={`px-2 py-1 rounded bg-success text-white small ${copySuccess ? 'opacity-100' : 'opacity-0'}`}
@@ -289,7 +488,7 @@ export default function Product() {
                                     <strong>Availability:</strong> {inStock ? (
                                         <span className="text-success">In Stock</span>
                                     ) : (
-                                        <span className="text-danger">Out of Stock</span>
+                                        <span className="text-danger">Sold Out</span>
                                     )}
                                 </li>
                             </ul>
@@ -341,35 +540,6 @@ export default function Product() {
                 </div>
             )}
 
-
-            {/* Related Products */}
-            {/* <div className="mt-5">
-                <h4>Related Products</h4>
-                <div className="row">
-                    {relatedProducts.map((prod) => (
-                        <div key={prod.id} className="col-sm-6 col-md-4 col-lg-3 mb-3">
-                            <div className="card h-100 shadow-sm">
-                                <img
-                                    src={prod.image}
-                                    alt={prod.name}
-                                    className="card-img-top"
-                                    style={{ objectFit: 'cover', height: '150px' }}
-                                />
-                                <div className="card-body d-flex flex-column">
-                                    <h6 className="card-title">{prod.name}</h6>
-                                    <p className="card-text text-success fw-bold">${prod.price.toFixed(2)}</p>
-                                    <button
-                                        className="btn btn-sm btn-outline-primary mt-auto"
-                                        onClick={() => alert(`Added ${prod.name} to cart!`)}
-                                    >
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div> */}
         </div>
     );
 }

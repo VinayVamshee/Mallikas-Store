@@ -21,25 +21,30 @@ export default function Home() {
 
     const HoverItem = ({ item }) => {
         const [imageIndex, setImageIndex] = useState(0);
-        const [hovering, setHovering] = useState(false);
-
-        useEffect(() => {
-            let interval;
-            if (hovering && item.otherImages?.length > 0) {
-                interval = setInterval(() => {
-                    setImageIndex((prev) => (prev + 1) % item.otherImages.length);
-                }, 1000);
-            } else {
-                setImageIndex(0);
-            }
-
-            return () => clearInterval(interval);
-        }, [hovering, item.otherImages]);
-
-        const currentImage =
-            hovering && item.otherImages?.length > 0
-                ? item.otherImages[imageIndex]
-                : item.mainImage;
+                const [hovering, setHovering] = useState(false);
+        
+                // Combine mainImage with valid non-empty otherImages
+                const validImages = [
+                    item.mainImage,
+                    ...(Array.isArray(item.otherImages) ? item.otherImages.filter(img => img.trim() !== '') : [])
+                ];
+        
+                useEffect(() => {
+                    let interval;
+        
+                    if (hovering && validImages.length > 1) {
+                        interval = setInterval(() => {
+                            setImageIndex((prev) => (prev + 1) % validImages.length);
+                        }, 1000);
+                    } else {
+                        setImageIndex(0); // Always reset to mainImage when not hovering
+                    }
+        
+                    return () => clearInterval(interval);
+                }, [hovering, validImages.length]);
+        
+                const currentImage = validImages[imageIndex];
+        
 
         return (
             <Link
@@ -85,7 +90,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="carousel-item">
-                        <img src="https://images.bazarindiano.com.br/uploads/2022/12/shutterstock_132714794-1-scaled.jpg" className="d-block" alt="..." />
+                        <img src="https://images3.alphacoders.com/853/853180.jpg" className="d-block" alt="..." />
                         <div className="carousel-caption d-none d-md-block d-flex flex-column justify-content-center align-items-center  top-40 bottom-50">
                             <h1>Apparels</h1>
                             <p>Step into style with our latest collection of sarees, kurtis, and trendy outfits designed for every occasion.</p>

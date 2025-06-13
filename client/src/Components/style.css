@@ -20,15 +20,16 @@ body,
 
 /* List group items */
 .filters .list-group-item {
-  background-color: #2e1a28;  /* deep plum */
-  color: #f4c3d2;
-  border: none;
-  border-radius: 6px;
-  margin-bottom: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
+    background-color: #2e1a28;
+    /* deep plum */
+    color: #f4c3d2;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 
 .navigation {
@@ -517,7 +518,6 @@ Link {
 .cart-item img {
     width: 100px;
 }
-
 
 .cart-item-info {
     border: 0.5px solid gray;

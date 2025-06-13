@@ -27,17 +27,23 @@ export default function Accessories() {
     const [loading, setLoading] = useState(true);
 
     const fetchItems = async () => {
-        setLoading(true); // Start spinner
+        setLoading(true);
         try {
             const response = await axios.get('https://mallikas-store-server.vercel.app/items');
             const sortedItems = response.data
                 .filter(item => item.category === 'accessories')
-                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                .sort((a, b) => {
+                    // First, put available items before unavailable ones
+                    if (a.available && !b.available) return -1;
+                    if (!a.available && b.available) return 1;
+                    // If both have same availability, sort by date
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
             setItems(sortedItems);
         } catch (error) {
             console.error('Failed to fetch items:', error);
         } finally {
-            setLoading(false); // Stop spinner
+            setLoading(false);
         }
     };
 
@@ -49,23 +55,27 @@ export default function Accessories() {
         const [imageIndex, setImageIndex] = useState(0);
         const [hovering, setHovering] = useState(false);
 
+        // Combine mainImage with valid non-empty otherImages
+        const validImages = [
+            item.mainImage,
+            ...(Array.isArray(item.otherImages) ? item.otherImages.filter(img => img.trim() !== '') : [])
+        ];
+
         useEffect(() => {
             let interval;
-            if (hovering && item.otherImages?.length > 0) {
+
+            if (hovering && validImages.length > 1) {
                 interval = setInterval(() => {
-                    setImageIndex((prev) => (prev + 1) % item.otherImages.length);
+                    setImageIndex((prev) => (prev + 1) % validImages.length);
                 }, 1000);
             } else {
-                setImageIndex(0);
+                setImageIndex(0); // Always reset to mainImage when not hovering
             }
 
             return () => clearInterval(interval);
-        }, [hovering, item.otherImages]);
+        }, [hovering, validImages.length]);
 
-        const currentImage =
-            hovering && item.otherImages?.length > 0
-                ? item.otherImages[imageIndex]
-                : item.mainImage;
+        const currentImage = validImages[imageIndex];
 
         return (
             <Link
@@ -75,11 +85,18 @@ export default function Accessories() {
                 onMouseEnter={() => setHovering(true)}
                 onMouseLeave={() => setHovering(false)}
             >
-                <img src={currentImage} alt={item.name} />
+                <img
+                    src={currentImage}
+                    alt={item.name}
+                    className={item.available ? '' : 'unavailable-item'}
+                />
                 <div className="item-info">
                     <div className="item-name">{item.name}</div>
                     <div className="item-specifics">{item.color} - {item.size}</div>
-                    <div className="item-price">${item.price}</div>
+                    <div className="item-price">
+                        ${item.price}{' '}
+                        {!item.available && <span className="text-danger ms-2">Sold Out</span>}
+                    </div>
                 </div>
             </Link>
         );
@@ -141,6 +158,11 @@ export default function Accessories() {
             return matchCategory && matchSize && matchColor && matchSearch;
         })
         .sort((a, b) => {
+            // Step 1: Sort by availability
+            if (a.available && !b.available) return -1;
+            if (!a.available && b.available) return 1;
+
+            // Step 2: Sort within same availability group
             if (sortOption === 'latest') {
                 return new Date(b.createdAt) - new Date(a.createdAt);
             } else if (sortOption === 'oldest') {
@@ -630,7 +652,7 @@ export default function Accessories() {
                                             onChange={e => setEditItem({ ...editItem, available: e.target.value === 'true' })}
                                         >
                                             <option value='true'>In Stock</option>
-                                            <option value='false'>Out of Stock</option>
+                                            <option value='false'>Sold Out</option>
                                         </select>
                                     </div>
 
