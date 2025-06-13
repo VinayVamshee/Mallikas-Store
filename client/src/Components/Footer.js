@@ -42,13 +42,13 @@ export default function Footer() {
                             <div className="d-flex align-items-center">
                                 <i className="fa-brands fa-instagram fa-lg me-2" style={{ color: 'hotpink' }}></i>
                                 <a
-                                    href="https://instagram.com/mallikas.store"
+                                    href="https://www.instagram.com/maguva_collections_forall?igsh=cmNjcmV5dHNscmt4&utm_source=qr"
                                     className="text-white"
                                     target="_blank"
                                     rel="noreferrer"
                                     style={{ textDecoration: 'none' }}
                                 >
-                                    @mallikas.store
+                                    @maguva_collections_forall
                                 </a>
                             </div>
 
