@@ -508,7 +508,7 @@ export default function Navigation() {
                 </div>
 
                 {/* Register Modal */}
-                <div className='modal fade' id='RegisterModal' aria-hidden='true' aria-labelledby='RegisterModalLabel' tabIndex='-1'>
+                <div className='modal fade' id='RegisterModal' aria-hidden='true' aria-labelledby='RegisterModalLabel' tabIndex='-1' data-bs-backdrop='false'>
                     <div className='modal-dialog modal-dialog-centered'>
                         <div className='modal-content'>
                             <div className='modal-header'>
