@@ -165,11 +165,11 @@ export default function Navigation() {
     const [searchResults, setSearchResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const handleSearch = async () => {
-         if (!searchQuery.trim()) {
-        setShowResults(false);
-        setSearchResults([]);
-        return;
-    }
+        if (!searchQuery.trim()) {
+            setShowResults(false);
+            setSearchResults([]);
+            return;
+        }
         try {
             const res = await axios.get(`https://mallikas-store-server.vercel.app/items`);
             const allItems = res.data;
@@ -222,7 +222,7 @@ export default function Navigation() {
                 className="item text-decoration-none text-dark"
                 onMouseEnter={() => setHovering(true)}
                 onMouseLeave={() => setHovering(false)}
-                style={{marginTop:'50px'}}
+                style={{ marginTop: '50px' }}
             >
                 <img src={currentImage} alt={item.name} />
                 <div className="item-info">
@@ -537,7 +537,7 @@ export default function Navigation() {
                                         <label htmlFor='regPassword' className='form-label'>Password</label>
                                         <input type='password' className='form-control' id='regPassword' name='password' value={registerUser.password} onChange={handleRegisterChange} required />
                                     </div>
-                                    <button type='submit' className='btn btn-sm btn-outline-success'>Register</button>
+                                    <button type='submit' className='btn btn-sm btn-success' style={{width:'fit-content'}}>Register</button>
                                 </form>
                             </div>
                             <div className='modal-footer'>
@@ -558,7 +558,7 @@ export default function Navigation() {
                             ))}
                         </div>
                     ) : (
-                        <p style={{marginTop:'78px'}}>No items found.</p>
+                        <p style={{ marginTop: '78px' }}>No items found.</p>
                     )}
                 </div>
             )}
