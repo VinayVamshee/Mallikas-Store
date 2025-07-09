@@ -533,14 +533,17 @@ export default function User() {
     return (
         <div className='user' style={{ marginTop: '78px' }}>
             <div className='user-dashboard'>
-                <button className='btn ' onClick={() => setSection('profile')}>
-                    <i className="fa-solid fa-circle-user me-2"></i>Profile
+                <button className='btn' onClick={() => setSection('profile')}>
+                    <i className="fa-solid fa-circle-user me-2"></i>
+                    <span className="d-none d-md-inline">Profile</span>
                 </button>
-                <button className='btn ' onClick={() => setSection('cart')}>
-                    <i className="fa-solid fa-cart-shopping me-2"></i>Cart
+                <button className='btn' onClick={() => setSection('cart')}>
+                    <i className="fa-solid fa-cart-shopping me-2"></i>
+                    <span className="d-none d-md-inline">Cart</span>
                 </button>
-                <button className='btn ' onClick={() => setSection('orders')}>
-                    <i className="fa-solid fa-truck me-2"></i>Orders
+                <button className='btn' onClick={() => setSection('orders')}>
+                    <i className="fa-solid fa-truck me-2"></i>
+                    <span className="d-none d-md-inline">Orders</span>
                 </button>
             </div>
 
@@ -550,5 +553,6 @@ export default function User() {
                 {section === 'orders' && renderOrders()}
             </div>
         </div>
+
     );
 }
