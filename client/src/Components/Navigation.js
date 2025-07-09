@@ -148,6 +148,24 @@ export default function Navigation() {
         setItem({ ...item, otherImages: [...item.otherImages, ''] });
     };
 
+    const uploadToImgBB = async (file) => {
+    const formData = new FormData();
+    formData.append("key", "bf8e662104cc4c32321dc2f7ee77370f"); 
+    formData.append("image", file);
+
+    const res = await fetch("https://api.imgbb.com/1/upload", {
+        method: "POST",
+        body: formData,
+    });
+
+    const data = await res.json();
+    if (data.success) {
+        return data.data.display_url || data.data.url;
+    } else {
+        throw new Error("Image upload failed");
+    }
+};
+
     const handleItemSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -432,24 +450,37 @@ export default function Navigation() {
 
                                     <div className='mb-3'>
                                         <label className='form-label'>Main Image URL</label>
-                                        <input
-                                            type='text'
-                                            className='form-control'
-                                            value={item.mainImage}
-                                            onChange={e => setItem({ ...item, mainImage: e.target.value })}
-                                        />
+                                       <input
+    type='file'
+    className='form-control'
+    accept="image/*"
+    onChange={async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const url = await uploadToImgBB(file);
+            setItem({ ...item, mainImage: url });
+        }
+    }}
+/>
+
                                     </div>
 
                                     <div className='mb-3'>
                                         <label className='form-label'>Other Image URLs</label>
                                         {item.otherImages.map((img, idx) => (
                                             <input
-                                                key={idx}
-                                                type='text'
-                                                className='form-control mb-2'
-                                                value={img}
-                                                onChange={e => handleImageChange(idx, e.target.value)}
-                                            />
+    type='file'
+    className='form-control mb-2'
+    accept="image/*"
+    onChange={async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const url = await uploadToImgBB(file);
+            handleImageChange(idx, url); // updates the image link in state
+        }
+    }}
+/>
+
                                         ))}
                                         <button type='button' className='btn btn-sm btn-outline-secondary mt-2' onClick={addImageInput}>Add Another Image</button>
                                     </div>
