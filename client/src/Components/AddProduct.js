@@ -178,18 +178,25 @@ export default function AddProduct() {
                     </div>
                 </div>
 
-                <div className="mb-3">
-                    <label className="form-label">
-                        <i className="fa-solid fa-image me-2" />Main Image
-                    </label>
-                    <input type="file" className="form-control" accept="image/*"
-                        onChange={async (e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                                const url = await uploadToImgBB(file);
-                                setItem({ ...item, mainImage: url });
-                            }
-                        }} />
+                <div className="mb-3 row align-items-center">
+                    <div className="col-md-10">
+                        <label className="form-label">
+                            <i className="fa-solid fa-image me-2" />Main Image
+                        </label>
+                        <input type="file" className="form-control" accept="image/*"
+                            onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                    const url = await uploadToImgBB(file);
+                                    setItem({ ...item, mainImage: url });
+                                }
+                            }} />
+                    </div>
+                    {item.mainImage && (
+                        <div className="col-md-2 mt-2 text-center">
+                            <img src={item.mainImage} alt="Main" className="img-thumbnail" style={{ maxWidth: '100px' }} />
+                        </div>
+                    )}
                 </div>
 
                 <div className="mb-3">
@@ -197,14 +204,23 @@ export default function AddProduct() {
                         <i className="fa-solid fa-images me-2" />Other Images
                     </label>
                     {item.otherImages.map((img, idx) => (
-                        <input key={idx} type="file" className="form-control mb-2" accept="image/*"
-                            onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (file) {
-                                    const url = await uploadToImgBB(file);
-                                    handleImageChange(idx, url);
-                                }
-                            }} />
+                        <div className="row align-items-center mb-2" key={idx}>
+                            <div className="col-md-10">
+                                <input type="file" className="form-control" accept="image/*"
+                                    onChange={async (e) => {
+                                        const file = e.target.files[0];
+                                        if (file) {
+                                            const url = await uploadToImgBB(file);
+                                            handleImageChange(idx, url);
+                                        }
+                                    }} />
+                            </div>
+                            {img && img.trim() !== '' && (
+                                <div className="col-md-2 text-center">
+                                    <img src={img} alt={`Preview ${idx}`} className="img-thumbnail" style={{ maxWidth: '100px' }} />
+                                </div>
+                            )}
+                        </div>
                     ))}
                     <button type="button" className="btn btn-sm btn-outline-secondary mt-2" onClick={addImageInput}>
                         <i className="fa-solid fa-plus me-1" />Add Another Image
@@ -223,13 +239,24 @@ export default function AddProduct() {
                 </div>
 
                 <div className="d-flex justify-content-end gap-2 mt-4">
-                    <button type="submit" className="btn btn-success">
-                        <i className="fa-solid fa-floppy-disk me-2" />Save Product
+                    <button type="submit" className="btn btn-success" disabled={uploading}>
+                        {uploading ? (
+                            <>
+                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Uploading...
+                            </>
+                        ) : (
+                            <>
+                                <i className="fa-solid fa-floppy-disk me-2" />
+                                Save Product
+                            </>
+                        )}
                     </button>
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                         <i className="fa-solid fa-xmark me-1" />Cancel
                     </button>
                 </div>
+
             </form>
         </div>
     );
