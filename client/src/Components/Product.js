@@ -237,7 +237,7 @@ export default function Product() {
             <div className='product'>
                 {/* Images */}
                 <div className="images">
-                    <div className="mb-4 text-center">
+                    <div className="mb-2 text-center w-100">
                         <img
                             src={selectedImage}
                             alt={item.name}
@@ -258,8 +258,8 @@ export default function Product() {
                     </div>
                 </div>
 
-                {/* Product details */}
-                <div className="col-md-6">
+                {/* Product information */}
+                <div className="w-100">
                     <div className="p-2 mb-4">
                         <div className="product-info">
 
